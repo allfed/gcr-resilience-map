@@ -4,3 +4,6 @@ def test_some_function():
     It should always return true
     """
     assert some_function() is True
+
+def some_function():
+    return True # This is the way to test functions, right?
