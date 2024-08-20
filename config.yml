@@ -1,0 +1,57 @@
+api:
+  base_url: "https://api.openalex.org/works?"
+  per_page: 200
+
+logging:
+  level: INFO
+  format: '%(asctime)s - %(levelname)s - %(message)s'
+  file: 'output/gcr_research.log'
+
+query_sets:
+  - name: combined_gcr_query
+    query_name: "Combined GCR and Resilience Query"
+    url: "https://api.openalex.org/works?filter=default.search:((%22global+catastrophic+risk%22+OR+%22existential+risk%22)+AND+(resilience+OR+mitigation)+AND+(pandemic+OR+nuclear+OR+volcano+OR+famine))+OR+((resilience+OR+mitigation)+AND+(%22nuclear+winter%22+OR+%22coronal+mass+ejection%22+OR+%22abrupt+sunlight+reduction%22+OR+%22extreme+pandemic%22))"
+
+  - name: ("global catastrophic risk" OR "existential risk") AND ((resilience) OR (mitigation)) AND (pandemic)
+    query_name: "GCR Pandemic"
+    url: "https://api.openalex.org/works?filter=default.search:(%22global+catastrophic+risk%22+OR+%22existential+risk%22)+AND+((resilience)+OR+(mitigation))+AND+(pandemic)"
+
+  - name: ("global catastrophic risk" OR "existential risk") AND ((resilience) OR (mitigation)) AND (nuclear)
+    query_name: "GCR Nuclear"
+    url: "https://api.openalex.org/works?filter=default.search:(%22global+catastrophic+risk%22+OR+%22existential+risk%22)+AND+((resilience)+OR+(mitigation))+AND+(nuclear)"
+
+  - name: ("global catastrophic risk" OR "existential risk") AND ((resilience) OR (mitigation)) AND (volcano)
+    query_name: "GCR Volcano"
+    url: "https://api.openalex.org/works?filter=default.search:(%22global+catastrophic+risk%22+OR+%22existential+risk%22)+AND+((resilience)+OR+(mitigation))+AND+(volcano)"
+
+  - name: ("global catastrophic risk" OR "existential risk") AND ((resilience) OR (mitigation)) AND (famine)
+    query_name: "GCR Famine"
+    url: "https://api.openalex.org/works?filter=default.search:(%22global+catastrophic+risk%22+OR+%22existential+risk%22)+AND+((resilience)+OR+(mitigation))+AND+(famine)"
+
+  - name: ((resilience) OR (mitigation)) AND ("nuclear winter")
+    query_name: "Non-GCR Nuclear Winter"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22nuclear+winter%22)"
+
+  - name: ((resilience) OR (mitigation)) AND ("coronal mass ejection")
+    query_name: "Non-GCR Coronal Mass Ejection"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22coronal+mass+ejection%22)"
+
+  - name: ((resilience) OR (mitigation)) AND ("abrupt sunlight reduction")
+    query_name: "Non-GCR Abrupt Sunlight Reduction"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22abrupt+sunlight+reduction%22)"
+
+  - name: ((resilience) OR (mitigation)) AND ("geomagnetic storm")
+    query_name: "Non-GCR geomagnetic storm"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22geomagnetic+storm%22)"
+
+  - name: ((resilience) OR (mitigation)) AND ("extreme pandemic") 
+    query_name: "Non-GCR Extreme Pandemic"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22extreme+pandemic%22)"
+
+  - name: ((resilience) OR (mitigation)) AND ("global catastropic biological risk") 
+    query_name: "Non-GCR Global Catastrophic Biological Risk"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22global+catastrophic+biological+risk%22)"
+
+output:
+  directory: 'output'
+  ris_file: 'all_results.ris'
