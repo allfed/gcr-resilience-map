@@ -3,7 +3,8 @@ import pandas as pd
 import yaml
 
 def load_config(config_path):
-    with open(config_path, 'r') as f:
+    """Load and return the configuration from the specified YAML file."""
+    with open(config_path, 'r', encoding='utf-8') as f:
         return yaml.safe_load(f)
 
 def get_file_stats(directory):
