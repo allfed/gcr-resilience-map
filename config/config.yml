@@ -51,6 +51,14 @@ query_sets:
   - name: ((resilience) OR (mitigation)) AND ("global catastropic biological risk") 
     query_name: "Non-GCR Global Catastrophic Biological Risk"
     url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22global+catastrophic+biological+risk%22)"
+  
+  - name: ((resilience) OR (mitigation)) AND ("catastrophic infrastructure loss") 
+    query_name: "Non-GCR Catastrophic Infrastructure Loss"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22catastrophic+infrastructure+loss%22)"
+  
+  - name: ((resilience) OR (mitigation)) AND ("black sky hazard") 
+    query_name: "Non-GCR Black Sky Hazard"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22black+sky+hazard%22)"
 
 output:
   directory: 'output'

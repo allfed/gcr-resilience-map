@@ -36,15 +36,17 @@ class QueryProcessor:
                 'publication_year': result['publication_year'],
                 'journal': result.get('host_venue', {}).get('display_name', ''),
                 'doi': result.get('doi', ''),
+                'relevance_score': result.get('relevance_score', 0),  # Add relevance score
             })
         return processed
 
     def update_url_with_cursor(self, url: str, cursor: str) -> str:
-        """Update the URL with a new cursor value."""
+        """Update the URL with a new cursor value and sorting parameter."""
         parsed_url = urlparse(url)
         query_params = parse_qs(parsed_url.query)
         query_params['cursor'] = [cursor]
         query_params['per-page'] = [str(self.per_page)]
+        query_params['sort'] = ['relevance_score:desc']  # Add sorting by relevance score
         new_query = urlencode(query_params, doseq=True)
         return urlunparse(parsed_url._replace(query=new_query))
 
@@ -87,6 +89,9 @@ class QueryProcessor:
             if not cursor:
                 break
         df = pd.DataFrame(all_results)
+        
+        # Sort the DataFrame by relevance_score in descending order
+        df = df.sort_values(by='relevance_score', ascending=False)
+        
         self.save_to_cache(df, query_name)
         return df
-    
