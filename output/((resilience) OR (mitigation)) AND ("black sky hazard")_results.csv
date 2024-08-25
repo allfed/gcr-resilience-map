@@ -1,10 +1,9 @@
-id,title,authors,publication_year,journal,doi
-https://openalex.org/W2750756745,Black Sky Hazards: Resilience Planning,John Organek,2017,,https://doi.org/10.1061/9780784481028.004
-https://openalex.org/W2948846842,A Resilience Toolbox and Research Design for Black Sky Hazards to Power Grids,"Dmitry Borisoglebsky, Liz Varga",2019,,https://doi.org/10.1155/2019/1065419
-https://openalex.org/W2995621496,Modeling and Quantification of Resilience in Complex Engineering Systems,"Riccardo Patriarca, Seyedmohsen Hosseini",2019,,https://doi.org/10.1155/2019/1038908
-https://openalex.org/W2940899126,Utility Investments in Resilience of Electricity Systems,"R. N. Elliot, Scott Aaronson",2019,,https://doi.org/10.2172/1506414
-https://openalex.org/W4400392581,The Value of Resilience for Distributed Energy Resources: An Overview of Current Analytical Practices,"Wilson Rickerson, J. A. Gillis, Marisa Bulkeley",2024,,https://doi.org/10.2172/2394652
-https://openalex.org/W4200239776,Quantifying grid reliability and resilience impacts of energy efficiency: Examples and opportunities,"Natalie Mims Frick, Juan Pablo Carvallo, Lisa Schwartz",2021,,https://doi.org/10.2172/1834369
-https://openalex.org/W4400392516,Advancing Electric System Resilience with Distributed Energy Resources: Key Questions and Resources,Kiera Zitelman,2024,,https://doi.org/10.2172/2394651
-https://openalex.org/W4242557350,People in the News,,2015,,https://doi.org/10.1002/j.1551-8833.2015.tb11145.x
-https://openalex.org/W4242557350,People in the News,,2015,,https://doi.org/10.1002/j.1551-8833.2015.tb11145.x
+id,title,authors,publication_year,journal,doi,relevance_score
+https://openalex.org/W2750756745,Black Sky Hazards: Resilience Planning,John Organek,2017,,https://doi.org/10.1061/9780784481028.004,103.343155
+https://openalex.org/W2948846842,A Resilience Toolbox and Research Design for Black Sky Hazards to Power Grids,"Dmitry Borisoglebsky, Liz Varga",2019,,https://doi.org/10.1155/2019/1065419,74.188614
+https://openalex.org/W2995621496,Modeling and Quantification of Resilience in Complex Engineering Systems,"Riccardo Patriarca, Seyedmohsen Hosseini",2019,,https://doi.org/10.1155/2019/1038908,3.5272112
+https://openalex.org/W2940899126,Utility Investments in Resilience of Electricity Systems,"R. N. Elliot, Scott Aaronson",2019,,https://doi.org/10.2172/1506414,3.136328
+https://openalex.org/W4400392581,The Value of Resilience for Distributed Energy Resources: An Overview of Current Analytical Practices,"Wilson Rickerson, J. A. Gillis, Marisa Bulkeley",2024,,https://doi.org/10.2172/2394652,3.0388923
+https://openalex.org/W4200239776,Quantifying grid reliability and resilience impacts of energy efficiency: Examples and opportunities,"Natalie Mims Frick, Juan Pablo Carvallo, Lisa Schwartz",2021,,https://doi.org/10.2172/1834369,2.5514362
+https://openalex.org/W4400392516,Advancing Electric System Resilience with Distributed Energy Resources: Key Questions and Resources,Kiera Zitelman,2024,,https://doi.org/10.2172/2394651,0.5089213
+https://openalex.org/W4242557350,People in the News,,2015,,https://doi.org/10.1002/j.1551-8833.2015.tb11145.x,0.49371907

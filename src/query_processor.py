@@ -89,9 +89,12 @@ class QueryProcessor:
             if not cursor:
                 break
         df = pd.DataFrame(all_results)
-        
-        # Sort the DataFrame by relevance_score in descending order
-        df = df.sort_values(by='relevance_score', ascending=False)
-        
+        # Check if 'relevance_score' column exists
+        if 'relevance_score' in df.columns:
+            df = df.sort_values(by='relevance_score', ascending=False)
+        else:
+            print(f"Warning: 'relevance_score' column not found in results for "
+                  f"query '{query_name}'. Skipping sorting.")
         self.save_to_cache(df, query_name)
         return df
+    

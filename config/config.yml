@@ -10,8 +10,8 @@ logging:
 query_sets:
   - name: combined_gcr_query
     query_name: "Combined GCR and Resilience Query"
-    url: "https://api.openalex.org/works?filter=default.search:((%22global+catastrophic+risk%22+OR+%22existential+risk%22)+AND+(resilience+OR+mitigation)+AND+(pandemic+OR+nuclear+OR+volcano+OR+famine))+OR+((resilience+OR+mitigation)+AND+(%22nuclear+winter%22+OR+%22coronal+mass+ejection%22+OR+%22abrupt+sunlight+reduction%22+OR+%22extreme+pandemic%22))"
-
+    url: "https://api.openalex.org/works?page=1&filter=default.search:((%22global+catastrophic+risk%22+OR+%22existential+risk%22)++AND+(resilience+OR+mitigation)++AND+(pandemic+OR+nuclear+OR+volcano+OR+famine)+)+OR++((resilience+OR+mitigation)++AND+(%22nuclear+winter%22++OR+%22coronal+mass+ejection%22++OR+%22abrupt+sunlight+reduction%22++OR+%22geomagnetic+storm%22++OR+%22extreme+pandemic%22++OR+%22global+catastrophic+biological+risk%22++OR+%22catastrophic+infrastructure+loss%22++OR+%22black+sky+hazard%22++OR+%22cascading+risk%22++OR+%22solar+flare%22++OR+%22extreme+space+weather%22++OR+%22next+black+death%22++OR+%22engineered+pathogen%22))"
+  
   - name: ("global catastrophic risk" OR "existential risk") AND ((resilience) OR (mitigation)) AND (pandemic)
     query_name: "GCR Pandemic"
     url: "https://api.openalex.org/works?filter=default.search:(%22global+catastrophic+risk%22+OR+%22existential+risk%22)+AND+((resilience)+OR+(mitigation))+AND+(pandemic)"
@@ -59,6 +59,27 @@ query_sets:
   - name: ((resilience) OR (mitigation)) AND ("black sky hazard") 
     query_name: "Non-GCR Black Sky Hazard"
     url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22black+sky+hazard%22)"
+
+  - name: ((resilience) OR (mitigation)) AND ("cascading risk") 
+    query_name: "Non-GCR Cascading Risk"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22cascading+risk%22)"
+
+  - name: ((resilience) OR (mitigation)) AND ("solar flare") 
+    query_name: "Non-GCR Solar Flare"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22solar+flare%22)"
+
+  - name: ((resilience) OR (mitigation)) AND ("catastrophic infrastructure loss") 
+    query_name: "Non-GCR Catastrophic Infrastructure Loss"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22catastrophic+infrastructure+loss%22)"
+
+  - name: ((resilience) OR (mitigation)) AND ("extreme space weather") 
+    query_name: "Non-GCR Extreme Space Weather"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22extreme+space+weather%22)"
+
+
+  - name: ((resilience) OR (mitigation)) AND ("engineered pathogen") 
+    query_name: "Non-GCR Engineered Pathogen"
+    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22engineered+pathogen%22)"
 
 output:
   directory: 'output'
