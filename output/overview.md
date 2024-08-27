@@ -148,4 +148,4 @@ URL: https://api.openalex.org/works?filter=default.search:((resilience)+OR+(miti
 
 ## Overall Statistics
 
-- Total unique articles across all queries: 16889
+- Total unique articles across all queries: 23002

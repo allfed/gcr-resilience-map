@@ -68,10 +68,6 @@ query_sets:
     query_name: "Non-GCR Solar Flare"
     url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22solar+flare%22)"
 
-  - name: ((resilience) OR (mitigation)) AND ("catastrophic infrastructure loss") 
-    query_name: "Non-GCR Catastrophic Infrastructure Loss"
-    url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22catastrophic+infrastructure+loss%22)"
-
   - name: ((resilience) OR (mitigation)) AND ("extreme space weather") 
     query_name: "Non-GCR Extreme Space Weather"
     url: "https://api.openalex.org/works?filter=default.search:((resilience)+OR+(mitigation))+AND+(%22extreme+space+weather%22)"
