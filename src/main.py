@@ -40,6 +40,18 @@ def main():
                         help='Force refresh all queries, ignoring cache')
     args = parser.parse_args()
 
+    # Print current working directory
+    print(f"Current working directory: {os.getcwd()}")
+
+    # Print full path of the config file
+    config_path = os.path.abspath(args.config)
+    print(f"Attempting to open config file: {config_path}")
+
+    # Check if the file exists
+    if not os.path.exists(config_path):
+        print(f"Error: Config file not found at {config_path}")
+        return
+
     with open(args.config, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
 
@@ -126,4 +138,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
