@@ -2,7 +2,7 @@
 
 
 ### load_config
-[source](https://github.com/allfed/gcr-resilience-map/blob/master/src/generate_overview.py/#L8)
+[source](https://github.com/allfed/gcr-resilience-map/blob/master/src/generate_overview.py/#L9)
 ```python
 .load_config(
    config_path
@@ -16,7 +16,7 @@ Load and return the configuration from the specified YAML file.
 
 
 ### get_file_stats
-[source](https://github.com/allfed/gcr-resilience-map/blob/master/src/generate_overview.py/#L13)
+[source](https://github.com/allfed/gcr-resilience-map/blob/master/src/generate_overview.py/#L15)
 ```python
 .get_file_stats(
    directory
@@ -30,7 +30,7 @@ Calculate statistics for CSV files in the given directory.
 
 
 ### generate_overview
-[source](https://github.com/allfed/gcr-resilience-map/blob/master/src/generate_overview.py/#L28)
+[source](https://github.com/allfed/gcr-resilience-map/blob/master/src/generate_overview.py/#L31)
 ```python
 .generate_overview(
    config_path, output_dir
