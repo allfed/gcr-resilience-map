@@ -5,10 +5,12 @@ import os
 import pandas as pd
 import yaml
 
+
 def load_config(config_path):
     """Load and return the configuration from the specified YAML file."""
     with open(config_path, 'r', encoding='utf-8') as f:
         return yaml.safe_load(f)
+
 
 def get_file_stats(directory):
     """Calculate statistics for CSV files in the given directory."""
@@ -24,6 +26,7 @@ def get_file_stats(directory):
                     'year_range': f"{df['publication_year'].min()}-{df['publication_year'].max()}"
                 }
     return stats
+
 
 def generate_overview(config_path, output_dir):
     """Generate an overview of GCR research based on config and CSV files."""
@@ -51,7 +54,9 @@ def generate_overview(config_path, output_dir):
     with open(os.path.join(output_dir, 'overview.md'), 'w', encoding='utf-8') as f:
         f.write(overview)
 
+
 if __name__ == "__main__":
+    
     CONFIG_PATH = 'config/config.yml'
     OUTPUT_DIR = 'output'
     OUTPUT_DIR = 'output'
