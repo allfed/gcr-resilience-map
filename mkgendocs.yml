@@ -9,6 +9,13 @@ copyright: ALLFED
 
 #This specifies the autogeneration portion
 pages:
+  - page: "modules/src/generate_overview.md"
+    source: "src/generate_overview.py"
+    functions:
+      - load_config
+      - get_file_stats
+      - generate_overview
+
   - page: "modules/src/utils.md"
     source: "src/utils.py"
     functions:
@@ -17,11 +24,4 @@ pages:
       - save_to_ris
       - compute_symmetric_difference
       - analyze_symmetric_difference
-
-  - page: "modules/src/generate_overview.md"
-    source: "src/generate_overview.py"
-    functions:
-      - load_config
-      - get_file_stats
-      - generate_overview
 
