@@ -4,6 +4,7 @@ import logging
 from typing import Dict, Any, List, Tuple
 import pandas as pd
 
+
 def setup_logging(config: Dict[str, Any]) -> logging.Logger:
     """Set up logging based on configuration."""
     logging.basicConfig(
@@ -13,10 +14,12 @@ def setup_logging(config: Dict[str, Any]) -> logging.Logger:
     )
     return logging.getLogger(__name__)
 
+
 def save_results(df: pd.DataFrame, filename: str):
     """Save results to a CSV file."""
     df.to_csv(filename, index=False)
     print(f"Results saved to {filename}")
+
 
 def save_to_ris(articles: List[Dict[str, Any]], filename: str):
     """Save all articles to a single RIS file."""
@@ -40,6 +43,7 @@ def save_to_ris(articles: List[Dict[str, Any]], filename: str):
             f.write("ER  - \n\n")
     print(f"All results saved to RIS file: {filename}")
 
+
 def compute_symmetric_difference(
         df1: pd.DataFrame, df2: pd.DataFrame
                                  ) -> Tuple[pd.DataFrame, pd.DataFrame]:
@@ -47,6 +51,7 @@ def compute_symmetric_difference(
     df1_only = df1[~df1['id'].isin(df2['id'])]
     df2_only = df2[~df2['id'].isin(df1['id'])]
     return df1_only, df2_only
+
 
 def analyze_symmetric_difference(
     df1: pd.DataFrame, df2: pd.DataFrame, name1: str, name2: str, output_dir: str
