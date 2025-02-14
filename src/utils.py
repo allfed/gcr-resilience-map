@@ -8,9 +8,7 @@ import pandas as pd
 def setup_logging(config: Dict[str, Any]) -> logging.Logger:
     """Set up logging based on configuration."""
     logging.basicConfig(
-        level=config['level'],
-        format=config['format'],
-        filename=config['file']
+        level=config["level"], format=config["format"], filename=config["file"]
     )
     return logging.getLogger(__name__)
 
@@ -23,14 +21,14 @@ def save_results(df: pd.DataFrame, filename: str):
 
 def save_to_ris(articles: List[Dict[str, Any]], filename: str):
     """Save all articles to a single RIS file."""
-    with open(filename, 'w', encoding='utf-8') as f:
+    with open(filename, "w", encoding="utf-8") as f:
         for article in articles:
             f.write("TY  - JOUR\n")
             f.write(f"TI  - {article['title']}\n")
             # Handle 'authors' field
-            authors = article.get('authors', '')
+            authors = article.get("authors", "")
             if isinstance(authors, str):
-                for author in authors.split(', '):
+                for author in authors.split(", "):
                     f.write(f"AU  - {author}\n")
             elif isinstance(authors, list):
                 for author in authors:
@@ -45,11 +43,11 @@ def save_to_ris(articles: List[Dict[str, Any]], filename: str):
 
 
 def compute_symmetric_difference(
-        df1: pd.DataFrame, df2: pd.DataFrame
-                                 ) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    df1: pd.DataFrame, df2: pd.DataFrame
+) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """Compute the symmetric difference between two DataFrames."""
-    df1_only = df1[~df1['id'].isin(df2['id'])]
-    df2_only = df2[~df2['id'].isin(df1['id'])]
+    df1_only = df1[~df1["id"].isin(df2["id"])]
+    df2_only = df2[~df2["id"].isin(df1["id"])]
     return df1_only, df2_only
 
 
