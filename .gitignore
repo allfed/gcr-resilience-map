@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+config/api_key.txt
+
+# Ignore pdfs
+*.pdf

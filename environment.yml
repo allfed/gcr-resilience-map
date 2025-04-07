@@ -1,10 +1,14 @@
-name: cb
+name: resilience_map
 channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=3.8
-  - numpy=1.21.2
+  - python=3.12
+  - numpy=2.2.4
+  - pandas=2.2.3
+  - anthropic=0.49.0
+  - PyPDF2=3.0.1
+  - matplotlib=3.10.1
   - pip
   - pip:
     - tqdm==4.62.3
