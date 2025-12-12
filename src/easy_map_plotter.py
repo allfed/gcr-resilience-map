@@ -205,25 +205,83 @@ if __name__ == '__main__':
     gcil_only = gcil - asrs - gcbr
     gcbr_only = gcbr - asrs - gcil
     
-# Build groups dict, skipping empty sets
+    # Build groups dict, skipping empty sets
     groups = {}
     
     if all_three:
-        groups['all_three'] = (list(all_three), '#3A913F', 'All Considered Risks')
+        groups['all_three'] = (list(all_three), '#779d77', 'All Considered Risks')
     if gcil_asrs:
-        groups['gcil_asrs'] = (list(gcil_asrs), '#D4A04F', 'Loss of Sunlight and Infrastructure')
+        groups['gcil_asrs'] = (list(gcil_asrs), '#bca97b', 'Loss of Sunlight and Infrastructure')
     if gcil_gcbr:
-        groups['gcil_gcbr'] = (list(gcil_gcbr), '#D9534F', 'Biological Risks and Loss of Infrastructure')
+        groups['gcil_gcbr'] = (list(gcil_gcbr), '#ac6b7e', 'Biological Risks and Loss of Infrastructure')
     if asrs_gcbr:
-        groups['asrs_gcbr'] = (list(asrs_gcbr), '#755549', 'Biological Risks and Loss of Sunlight')
+        groups['asrs_gcbr'] = (list(asrs_gcbr), '#8d796d', 'Biological Risks and Loss of Sunlight')
     if asrs_only:
-        groups['asrs_only'] = (list(asrs_only), '#5B8FA8', 'Loss of Sunlight only')
+        groups['asrs_only'] = (list(asrs_only), '#779cae', 'Loss of Sunlight only')
     if gcil_only:
-        groups['gcil_only'] = (list(gcil_only), '#B06543', 'Loss of Infrastructure only')
+        groups['gcil_only'] = (list(gcil_only), '#b58365', 'Loss of Infrastructure only')
     if gcbr_only:
-        groups['gcbr_only'] = (list(gcbr_only), '#5D5068', 'Biological Risks only')
+        groups['gcbr_only'] = (list(gcbr_only), '#8c798c', 'Biological Risks only')
+
+
 
     wm = WorldMap()
     fig, ax = wm.plot(groups, title='Resilience to Global Catastrophic Risks')
     plt.savefig('results/figures/gcr_resilience_map.png', dpi=150, bbox_inches='tight')
+    plt.show()
+
+    # Nuclear weapon states
+    nuclear_states = {'USA', 'Russia', 'United Kingdom', 'France', 'China', 
+                     'India', 'Pakistan', 'North Korea', 'Israel'}
+    
+    # NATO members (32)
+    nato = {'Albania', 'Belgium', 'Bulgaria', 'Canada', 'Croatia', 'Czech Republic',
+            'Denmark', 'Estonia', 'Finland', 'France', 'Germany', 'Greece', 'Hungary',
+            'Iceland', 'Italy', 'Latvia', 'Lithuania', 'Luxembourg', 'Montenegro',
+            'Netherlands', 'North Macedonia', 'Norway', 'Poland', 'Portugal', 'Romania',
+            'Slovakia', 'Slovenia', 'Spain', 'Sweden', 'Turkey', 'United Kingdom', 
+            'USA'}
+    
+    # CSTO members
+    csto = {'Armenia', 'Belarus', 'Kazakhstan', 'Kyrgyzstan', 'Russia', 'Tajikistan'}
+    
+    # Non-NATO US allies with nuclear umbrella
+    us_allies_asia = {'Japan', 'South Korea', 'Australia'}
+    
+    # China-North Korea defense pact
+    china_nk = {'China', 'North Korea'}
+    
+    # Pakistan-Saudi Arabia defense pact
+    pakistan_saudi = {'Pakistan', 'Saudi Arabia'}
+    
+    # Independent nuclear states (not in major alliances)
+    independent_nuclear = nuclear_states - nato - csto - us_allies_asia - china_nk - pakistan_saudi
+    # This gives us: India, Israel
+    
+    # Build the map with ordered groups (later groups override earlier ones)
+    groups = {}
+    
+    # Start with NATO (medium blue, not too bright)
+    groups['nato'] = (list(nato), '#5B88A8', 'NATO (includes US, UK, France with nuclear weapons)')
+    
+    # CSTO (muted red) - will override for countries in both
+    groups['csto'] = (list(csto), '#A85858', 'CSTO (includes Russia with nuclear weapons)')
+    
+    # Non-NATO US allies (lighter blue)
+    groups['us_allies'] = (list(us_allies_asia), '#8FADBD', 'US allies with nuclear umbrella')
+    
+    # China-North Korea defense pact (muted purple-grey)
+    groups['china_nk'] = (list(china_nk), '#8B7B8A', 'China-North Korea defense pact, both with nuclear weapons')
+    
+    # Pakistan-Saudi Arabia defense pact (muted olive-green)
+    groups['pakistan_saudi'] = (list(pakistan_saudi), '#8B9B7A', 'Pakistan-Saudi Arabia defense pact, Pakistan with nuclear weapons')
+    
+    # Independent nuclear states (muted orange-tan)
+    groups['independent_nuclear'] = (list(independent_nuclear), '#B08860', 
+                                    'Nuclear weapon states without mutual defense agreements')
+
+    wm = WorldMap()
+    fig, ax = wm.plot(groups, title='Nuclear Weapon States and Alliances')
+    plt.savefig('results/figures/nuclear_alliances_map.png', dpi=150, bbox_inches='tight')
+    print("Map saved to nuclear_alliances_map.png")
     plt.show()
