@@ -136,7 +136,7 @@ def plot_volcano_map(volcano_gdf, output_path):
     volcano_gdf = volcano_gdf.sort_values('VEI')
     
     # Size scales with VEI for better visibility of large eruptions
-    sizes = 10 + volcano_gdf['VEI'] * 10
+    sizes = 50 + volcano_gdf['VEI'] * 10
     
     # Plot volcano points
     scatter = ax.scatter(
