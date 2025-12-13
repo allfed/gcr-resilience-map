@@ -1,8 +1,9 @@
 """
 Plot Holocene volcanic eruptions on a world map, colored by VEI.
 
-Reads volcano data from data/volcano_list.tsv and creates a map showing
-eruption locations as dots colored by Volcanic Explosivity Index (VEI).
+Reads volcano data from data/volcano_list.csv and creates a map showing
+eruption locations as dots. VEI 0-5 shown in yellow, VEI 6 in orange (2x size),
+VEI 7 in red (4x size), with volcano names labeled.
 
 Usage:
     python src/plot_volcano_map.py
@@ -11,8 +12,6 @@ Usage:
 import pandas as pd
 import geopandas as gpd
 import matplotlib.pyplot as plt
-from matplotlib.colors import BoundaryNorm
-from matplotlib.cm import ScalarMappable
 import numpy as np
 import warnings
 from pathlib import Path
@@ -23,7 +22,7 @@ plt.style.use("https://raw.githubusercontent.com/allfed/ALLFED-matplotlib-style-
 
 def load_volcano_data(filepath):
     """
-    Load and clean volcano eruption data from TSV file.
+    Load and clean volcano eruption data from CSV file.
     
     Handles the NOAA NGDC format which has:
     - A "Search Parameters" row at the top
@@ -118,13 +117,6 @@ def plot_volcano_map(volcano_gdf, output_path):
     world = world.to_crs('+proj=wintri')
     volcano_gdf = volcano_gdf.to_crs('+proj=wintri')
     
-    # Set up VEI colormap
-    # VEI ranges 0-7, using Yellow-Orange-Red for intuitive severity mapping
-    vei_min, vei_max = 0, 7
-    vei_levels = np.arange(vei_min, vei_max + 2)  # Boundaries: 0,1,2,3,4,5,6,7,8
-    cmap = plt.cm.YlOrRd
-    norm = BoundaryNorm(vei_levels, cmap.N)
-    
     # Create figure
     fig, ax = plt.subplots(figsize=(14, 8))
     ax.set_facecolor('white')
@@ -132,25 +124,74 @@ def plot_volcano_map(volcano_gdf, output_path):
     # Plot countries (light gray background)
     world.plot(ax=ax, color='#F5F5F5', edgecolor='#888888', linewidth=0.3)
     
-    # Sort by VEI so larger eruptions are plotted on top
-    volcano_gdf = volcano_gdf.sort_values('VEI')
+    # Define VEI groups with colors and sizes
+    # Base size for VEI 0-5, then double for each level
+    base_size = 60
+    vei_groups = [
+        {'vei_range': (0, 5), 'color': '#FFD700', 'size': base_size, 'label': 'VEI 0-5'},
+        {'vei_range': (6, 6), 'color': '#FF8C00', 'size': base_size * 3, 'label': 'VEI 6'},
+        {'vei_range': (7, 7), 'color': '#DC143C', 'size': base_size * 6, 'label': 'VEI 7'}
+    ]
     
-    # Size scales with VEI for better visibility of large eruptions
-    sizes = 50 + volcano_gdf['VEI'] * 10
+    # Plot each VEI group separately
+    # Plot in reverse order so larger eruptions appear on top
+    for group in vei_groups:
+        vei_min, vei_max = group['vei_range']
+        mask = (volcano_gdf['VEI'] >= vei_min) & (volcano_gdf['VEI'] <= vei_max)
+        subset = volcano_gdf[mask]
+        
+        if len(subset) > 0:
+            ax.scatter(
+                subset.geometry.x,
+                subset.geometry.y,
+                c=group['color'],
+                s=group['size'],
+                alpha=1,
+                edgecolor='black',
+                linewidth=0.3,
+                label=group['label'],
+                zorder=3
+            )
     
-    # Plot volcano points
-    scatter = ax.scatter(
-        volcano_gdf.geometry.x,
-        volcano_gdf.geometry.y,
-        c=volcano_gdf['VEI'],
-        cmap=cmap,
-        norm=norm,
-        s=sizes,
-        alpha=0.75,
-        edgecolor='black',
-        linewidth=0.3,
-        zorder=3
-    )
+    # Add labels for VEI 7 eruptions
+    vei7_mask = volcano_gdf['VEI'] == 7
+    vei7_eruptions = volcano_gdf[vei7_mask]
+    
+    # Use adjustText if available, otherwise simple labels with offset
+    try:
+        from adjustText import adjust_text
+        texts = []
+        for idx, row in vei7_eruptions.iterrows():
+            text = ax.annotate(
+                row['Name'],
+                xy=(row.geometry.x, row.geometry.y),
+                xytext=(8, 8),
+                textcoords='offset points',
+                fontsize=8,
+                color='#333333',
+                bbox=dict(boxstyle='round,pad=0.3', facecolor='white', 
+                         edgecolor='grey', alpha=0.9, linewidth=0.5),
+                zorder=4
+            )
+            texts.append(text)
+        
+        # Adjust text positions to avoid overlaps
+        adjust_text(texts, arrowprops=dict(arrowstyle='-', color='#888888', 
+                                          lw=0.5, alpha=0.7))
+    except ImportError:
+        # Fallback: simple labels with offset
+        for idx, row in vei7_eruptions.iterrows():
+            ax.annotate(
+                row['Name'],
+                xy=(row.geometry.x, row.geometry.y),
+                xytext=(8, 8),
+                textcoords='offset points',
+                fontsize=8,
+                color='#333333',
+                bbox=dict(boxstyle='round,pad=0.3', facecolor='white', 
+                         edgecolor='#DC143C', alpha=0.9, linewidth=0.5),
+                zorder=4
+            )
     
     # Add ALLFED border
     border.plot(ax=ax, edgecolor='black', linewidth=0.5, facecolor='none', zorder=4)
@@ -158,34 +199,30 @@ def plot_volcano_map(volcano_gdf, output_path):
     # Remove axes
     ax.set_axis_off()
     
-    # Add colorbar
-    sm = ScalarMappable(cmap=cmap, norm=norm)
-    sm.set_array([])
-    cbar = fig.colorbar(
-        sm,
-        ax=ax,
-        orientation='horizontal',
-        fraction=0.03,
-        pad=0.02,
-        aspect=30,
-        ticks=np.arange(vei_min, vei_max + 1) + 0.5  # Center ticks in each color band
+    # Add legend (lower left)
+    legend = ax.legend(
+        loc='lower left',
+        frameon=True,
+        facecolor='white',
+        edgecolor='#888888',
+        fontsize=9,
+        markerscale=1.5
     )
-    cbar.ax.set_xticklabels(range(vei_min, vei_max + 1))  # Label with actual VEI values
-    cbar.set_label('Volcanic Explosivity Index (VEI)', fontsize=10)
-    cbar.ax.tick_params(labelsize=9, which='both', length=0, width=0)
+    legend.set_zorder(5)
     
     # Add title
     ax.set_title('Holocene Volcanic Eruptions by Explosivity', fontsize=14, pad=10)
     
-    # Add data summary annotation
+    # Add data summary annotation (lower right to avoid legend overlap)
     n_eruptions = len(volcano_gdf)
     n_volcanoes = volcano_gdf['Name'].nunique()
     ax.annotate(
         f'{n_eruptions:,} eruptions at {n_volcanoes:,} volcanoes',
-        xy=(0.02, 0.02),
+        xy=(0.98, 0.08),
         xycoords='axes fraction',
         fontsize=9,
-        color='#555555'
+        color='#555555',
+        ha='right'
     )
     
     # Add source annotation
