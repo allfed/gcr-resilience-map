@@ -246,7 +246,7 @@ if __name__ == '__main__':
     csto = {'Armenia', 'Belarus', 'Kazakhstan', 'Kyrgyzstan', 'Russia', 'Tajikistan'}
     
     # Non-NATO US allies with nuclear umbrella
-    us_allies_asia = {'Japan', 'South Korea', 'Australia'}
+    us_allies_asia = {'Japan', 'South Korea', 'Australia', 'Philippines'}
     
     # China-North Korea defense pact
     china_nk = {'China', 'North Korea'}
@@ -268,7 +268,7 @@ if __name__ == '__main__':
     groups['csto'] = (list(csto), '#A85858', 'CSTO (includes Russia with nuclear weapons)')
     
     # Non-NATO US allies (lighter blue)
-    groups['us_allies'] = (list(us_allies_asia), '#8FADBD', 'US allies with nuclear umbrella')
+    groups['us_allies'] = (list(us_allies_asia), '#8FADBD', 'US allies with mutual defense pact')
     
     # China-North Korea defense pact (muted purple-grey)
     groups['china_nk'] = (list(china_nk), '#8B7B8A', 'China-North Korea defense pact, both with nuclear weapons')
