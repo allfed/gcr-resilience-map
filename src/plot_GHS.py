@@ -120,7 +120,7 @@ world_ghs.plot(
     legend_kwds={
         'label': 'Global Health Security Index Score',
         'orientation': 'horizontal',
-        'shrink': 0.8,
+        'shrink': 0.3,
         'pad': 0.05
     }
 )
