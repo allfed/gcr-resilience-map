@@ -27,17 +27,18 @@ import tiktoken
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
 
 # Data Structures and Classes
 
+
 @dataclass
 class PaperMetadata:
     """Data class for paper metadata"""
+
     filename: str
     paper_citation: Optional[str] = None
     publication_type: Optional[str] = None
@@ -59,8 +60,11 @@ class PaperMetadata:
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary for storage, excluding current_query"""
-        return {k: v for k, v in self.__dict__.items()
-                if v is not None and k != 'current_query'}  # Exclude current_query
+        return {
+            k: v
+            for k, v in self.__dict__.items()
+            if v is not None and k != "current_query"
+        }  # Exclude current_query
 
 
 class PDFExtractor:
@@ -68,7 +72,7 @@ class PDFExtractor:
 
     def extract(self, file_path: Path) -> str:
         """Extract text from a PDF file"""
-        with open(file_path, 'rb') as file:
+        with open(file_path, "rb") as file:
             reader = PyPDF2.PdfReader(file)
             text = ""
             for page in reader.pages:
@@ -89,7 +93,7 @@ class Tokenizer:
     def truncate(self, text: str, ratio: float) -> str:
         """Truncate text to a given ratio of its original length"""
         tokens = self.encoding.encode(text)
-        return self.encoding.decode(tokens[:int(len(tokens) * ratio)])
+        return self.encoding.decode(tokens[: int(len(tokens) * ratio)])
 
 
 class ClaudeClient:
@@ -103,10 +107,17 @@ class ClaudeClient:
         """Process text with Claude"""
         response = self.client.messages.create(
             model=self.model,
-            max_tokens=kwargs.get('max_tokens', 1000),
-            temperature=kwargs.get('temperature', 0),
-            system=[{"type": "text", "text": "You are an AI assistant tasked with analyzing documents."}],
-            messages=[{"role": "user", "content": f"Document content:\n{text}\n\n{query}"}]
+            max_tokens=kwargs.get("max_tokens", 1000),
+            temperature=kwargs.get("temperature", 0),
+            system=[
+                {
+                    "type": "text",
+                    "text": "You are an AI assistant tasked with analyzing documents.",
+                }
+            ],
+            messages=[
+                {"role": "user", "content": f"Document content:\n{text}\n\n{query}"}
+            ],
         )
         return response.content[0].text
 
@@ -122,12 +133,12 @@ class FileCache:
     def _load_cache(self) -> None:
         """Load cache from file"""
         if self.cache_file.exists():
-            with open(self.cache_file, 'r', encoding='utf-8') as f:
+            with open(self.cache_file, "r", encoding="utf-8") as f:
                 self.cache = json.load(f)
 
     def _save_cache(self) -> None:
         """Save cache to file"""
-        with open(self.cache_file, 'w', encoding='utf-8') as f:
+        with open(self.cache_file, "w", encoding="utf-8") as f:
             json.dump(self.cache, f)
 
     def get(self, key: str) -> Optional[str]:
@@ -159,7 +170,7 @@ class CSVStorage:
             if not self.output_file.exists():
                 return False
             df = pd.read_csv(self.output_file)
-            return filename in df['filename'].values
+            return filename in df["filename"].values
         except (FileNotFoundError, pd.errors.EmptyDataError, KeyError, ValueError) as e:
             logger.error("Error checking if file is processed: %s", str(e))
             return False
@@ -170,7 +181,7 @@ class CSVStorage:
             if not self.output_file.exists():
                 return set()
             df = pd.read_csv(self.output_file)
-            return set(df['filename'].values)
+            return set(df["filename"].values)
         except (FileNotFoundError, pd.errors.EmptyDataError, KeyError, ValueError) as e:
             logger.error("Error getting processed files: %s", str(e))
             return set()
@@ -197,7 +208,7 @@ class PaperProcessor:
         max_tokens: int = 4000,
         truncation_ratio: float = 0.8,
         tokens_per_minute: int = 20000,  # Claude's rate limit
-        max_total_tokens: int = 200000   # Claude's total token limit
+        max_total_tokens: int = 200000,  # Claude's total token limit
     ):
         self.text_extractor = text_extractor
         self.tokenizer = tokenizer
@@ -211,12 +222,14 @@ class PaperProcessor:
 
         # Rate limiting tracking
         self.token_usage = []  # List of (timestamp, token_count) tuples
-        self.current_query: Optional[str] = None  # Store current query for token calculations
+        self.current_query: Optional[str] = (
+            None  # Store current query for token calculations
+        )
 
         # Calculate prompt tokens once
         self.prompt_tokens = self.tokenizer.count_tokens(
-            "Document content:\n\n" +  # Base prompt
-            "You are an AI assistant tasked with analyzing documents."  # System prompt
+            "Document content:\n\n"  # Base prompt
+            + "You are an AI assistant tasked with analyzing documents."  # System prompt
         )
 
     def _calculate_max_paper_tokens(self) -> int:
@@ -230,7 +243,9 @@ class PaperProcessor:
         """Remove token usage records older than 1 minute"""
         current_time = datetime.datetime.now()
         one_minute_ago = current_time - datetime.timedelta(minutes=1)
-        self.token_usage = [(ts, count) for ts, count in self.token_usage if ts > one_minute_ago]
+        self.token_usage = [
+            (ts, count) for ts, count in self.token_usage if ts > one_minute_ago
+        ]
 
     def _get_current_token_usage(self) -> int:
         """Get total token usage in the last minute"""
@@ -281,9 +296,9 @@ class PaperProcessor:
             try:
                 # Check rate limit and wait if necessary
                 total_tokens = (
-                    self.tokenizer.count_tokens(current_text) +
-                    self.prompt_tokens +
-                    self.tokenizer.count_tokens(query)
+                    self.tokenizer.count_tokens(current_text)
+                    + self.prompt_tokens
+                    + self.tokenizer.count_tokens(query)
                 )
                 self._wait_for_rate_limit(total_tokens)
 
@@ -296,16 +311,25 @@ class PaperProcessor:
             except (ValueError, RuntimeError, AttributeError) as e:
                 # Check for token limit errors (could be from various sources)
                 error_str = str(e).lower()
-                if "too long" in error_str or "token" in error_str and "limit" in error_str:
+                if (
+                    "too long" in error_str
+                    or "token" in error_str
+                    and "limit" in error_str
+                ):
                     # Truncate to 80% of current length
                     current_tokens = self.tokenizer.count_tokens(current_text)
                     target_tokens = int(current_tokens * self.truncation_ratio)
                     target_tokens = max(1000, target_tokens)  # Ensure minimum length
 
-                    logger.info("Token limit exceeded. Truncating from %d to %d tokens...",
-                                current_tokens, target_tokens)
+                    logger.info(
+                        "Token limit exceeded. Truncating from %d to %d tokens...",
+                        current_tokens,
+                        target_tokens,
+                    )
                     tokens = self.tokenizer.encoding.encode(current_text)
-                    current_text = self.tokenizer.encoding.decode(tokens[:target_tokens])
+                    current_text = self.tokenizer.encoding.decode(
+                        tokens[:target_tokens]
+                    )
                 else:
                     raise
 
@@ -317,14 +341,16 @@ class PaperProcessor:
 
             # Find the first line that looks like a CSV row (has multiple commas)
             # and doesn't contain the prompt text
-            lines = clean_text.split('\n')
+            lines = clean_text.split("\n")
             csv_line = None
             for line in lines:
                 # Skip lines that contain parts of the prompt
                 if "research question" in line.lower() or "csv format" in line.lower():
                     continue
                 # Find the line with the most commas that's not the prompt
-                if line.count(',') >= 10:  # We expect at least 10 commas for our CSV format
+                if (
+                    line.count(",") >= 10
+                ):  # We expect at least 10 commas for our CSV format
                     csv_line = line
                     break
 
@@ -353,7 +379,7 @@ class PaperProcessor:
                 vulnerable_resilient_regions=row[12] if len(row) > 12 else None,
                 overall_relevance=row[13] if len(row) > 13 else None,
                 evidence_gaps=row[14] if len(row) > 14 else None,
-                current_query=self.current_query
+                current_query=self.current_query,
             )
         except (ValueError, IndexError, csv.Error) as e:
             logger.error("Error parsing response for %s: %s", filename, str(e))
@@ -379,8 +405,10 @@ class PaperProcessor:
                         results.append(result)
                         continue
                 else:
-                    logger.warning("File %s marked as processed, no cache found. Reprocessing...",
-                                   pdf_path.name)
+                    logger.warning(
+                        "File %s marked as processed, no cache found. Reprocessing...",
+                        pdf_path.name,
+                    )
 
                 logger.info("Processing %s...", pdf_path.name)
                 result = self.process_paper(pdf_path, query)
@@ -393,10 +421,7 @@ class PaperProcessor:
             except (IOError, OSError, ValueError, KeyError) as e:
                 logger.error("Error processing %s: %s", pdf_path.name, str(e))
                 # Add error record
-                error_result = PaperMetadata(
-                    filename=pdf_path.name,
-                    error=str(e)
-                )
+                error_result = PaperMetadata(filename=pdf_path.name, error=str(e))
                 results.append(error_result)
                 # Save even after errors
                 self.storage.save_results(results)
@@ -405,7 +430,7 @@ class PaperProcessor:
 def main():
     """Main function to run the paper processing system"""
     # Load API key
-    with open("../config/api_key.txt", 'r', encoding='utf-8') as f:
+    with open("../config/api_key.txt", "r", encoding="utf-8") as f:
         api_key = f.read().strip()
 
     # Define extraction query
@@ -467,7 +492,7 @@ Respond with ONLY the CSV row (no column headers)."""
         tokenizer=tokenizer,
         llm_client=llm_client,
         cache=cache,
-        storage=storage
+        storage=storage,
     )
 
     # Process papers
