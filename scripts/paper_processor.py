@@ -6,21 +6,24 @@ to catastrophic risks using Claude.
 """
 
 # Import required libraries
+# Standard library imports
+import csv
+import datetime
+from dataclasses import dataclass
+import hashlib
+from io import StringIO
+import json
+import logging
 from pathlib import Path
+import time as sleep_time
+from typing import List, Optional, Dict, Any
+
+# Third-party imports
+import anthropic
 import pandas as pd
+import PyPDF2
 from tqdm import tqdm
 import tiktoken
-import csv
-import json
-from io import StringIO
-import hashlib
-import datetime
-import time as sleep_time
-import logging
-from dataclasses import dataclass
-from typing import List, Optional, Dict, Any
-import PyPDF2
-import anthropic
 
 # Configure logging
 logging.basicConfig(
