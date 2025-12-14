@@ -65,6 +65,7 @@ class PaperMetadata:
 
 class PDFExtractor:
     """Extracts text from PDF files"""
+
     def extract(self, file_path: Path) -> str:
         """Extract text from a PDF file"""
         with open(file_path, 'rb') as file:
@@ -77,6 +78,7 @@ class PDFExtractor:
 
 class Tokenizer:
     """Handles text tokenization and truncation"""
+
     def __init__(self, encoding_name: str = "cl100k_base"):
         self.encoding = tiktoken.get_encoding(encoding_name)
 
@@ -92,6 +94,7 @@ class Tokenizer:
 
 class ClaudeClient:
     """Client for Claude API"""
+
     def __init__(self, api_key: str, model: str = "claude-3-7-sonnet-20250219"):
         self.client = anthropic.Anthropic(api_key=api_key)
         self.model = model
@@ -110,6 +113,7 @@ class ClaudeClient:
 
 class FileCache:
     """Simple file-based cache"""
+
     def __init__(self, cache_file: Path):
         self.cache_file = cache_file
         self.cache: Dict[str, str] = {}
@@ -276,7 +280,11 @@ class PaperProcessor:
         while True:
             try:
                 # Check rate limit and wait if necessary
-                total_tokens = self.tokenizer.count_tokens(current_text) + self.prompt_tokens + self.tokenizer.count_tokens(query)
+                total_tokens = (
+                    self.tokenizer.count_tokens(current_text) +
+                    self.prompt_tokens +
+                    self.tokenizer.count_tokens(query)
+                )
                 self._wait_for_rate_limit(total_tokens)
 
                 # Try to process
@@ -295,7 +303,7 @@ class PaperProcessor:
                     target_tokens = max(1000, target_tokens)  # Ensure minimum length
 
                     logger.info("Token limit exceeded. Truncating from %d to %d tokens...",
-                               current_tokens, target_tokens)
+                                current_tokens, target_tokens)
                     tokens = self.tokenizer.encoding.encode(current_text)
                     current_text = self.tokenizer.encoding.decode(tokens[:target_tokens])
                 else:
@@ -371,8 +379,8 @@ class PaperProcessor:
                         results.append(result)
                         continue
                 else:
-                    logger.warning("File %s marked as processed but no cache found, reprocessing...",
-                                 pdf_path.name)
+                    logger.warning("File %s marked as processed, no cache found. Reprocessing...",
+                                   pdf_path.name)
 
                 logger.info("Processing %s...", pdf_path.name)
                 result = self.process_paper(pdf_path, query)
@@ -401,7 +409,13 @@ def main():
         api_key = f.read().strip()
 
     # Define extraction query
-    query = """I need you to analyze the provided research paper and extract specific information about regional resilience to catastrophic risks. Our research question is: "What specific geographical, institutional, and infrastructural factors have been empirically or theoretically identified as enhancing regional resilience to nuclear winter, large magnitude volcanic eruptions, extreme pandemics, and infrastructure collapse catastrophes, and how do these resilience factors vary across catastrophe types?"
+    query = """I need you to analyze the provided research paper and extract specific
+information about regional resilience to catastrophic risks. Our research question is:
+"What specific geographical, institutional, and infrastructural factors have been
+empirically or theoretically identified as enhancing regional resilience to nuclear
+winter, large magnitude volcanic eruptions, extreme pandemics, and infrastructure
+collapse catastrophes, and how do these resilience factors vary across catastrophe
+types?"
 
 After analyzing the paper thoroughly, provide your output in a single row CSV format with the following structure:
 
@@ -435,7 +449,10 @@ The entire row should look like: "field1","field2","field3",...,"field15"
 For fields with multiple options, use the exact values specified in brackets. Please analyze the paper thoroughly before extracting the information.
 Respond with ONLY the CSV row (no column headers, no additional text).
 
-For text fields, place the content in double quotes to properly handle any commas. For fields with multiple options, use the exact values specified in brackets. Please analyze the paper thoroughly before extracting the information. Respond with ONLY the CSV row (no column headers)."""
+For text fields, place the content in double quotes to properly handle any commas. 
+For fields with multiple options, use the exact values specified in brackets. P
+lease analyze the paper thoroughly before extracting the information. 
+Respond with ONLY the CSV row (no column headers)."""
 
     # Initialize components
     text_extractor = PDFExtractor()
