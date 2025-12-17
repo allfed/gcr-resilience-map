@@ -1,0 +1,178 @@
+<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="997pt" height="242pt" viewBox="0.00 0.00 996.62 241.83">
+<g id="graph0" class="graph" transform="translate(4,237.8300018310547) scale(1)" data-name="GCR">
+
+<polygon fill="white" stroke="none" points="-4,4 -4,-237.83 992.62,-237.83 992.62,4 -4,4"/>
+<!-- GCR -->
+<g id="node1" class="node" pointer-events="visible" data-name="NuclearWar" data-comment="GCR">
+
+<ellipse fill="none" stroke="black" cx="54.9" cy="-180.97" rx="47.92" ry="18"/>
+<text text-anchor="middle" x="54.9" y="-177.67" font-family="Helvetica,sans-Serif" font-size="11.00">Nuclear War</text>
+</g>
+<!-- ASRS -->
+<!-- ASRS -->
+<g id="node12" class="node" pointer-events="visible" data-name="ASRS">
+
+<polygon fill="none" stroke="black" points="235.9,-36 123.9,-36 123.9,0 235.9,0 235.9,-36"/>
+<text text-anchor="middle" x="179.9" y="-21.3" font-family="Helvetica,sans-Serif" font-size="11">Abrupt Sunlight</text>
+<text text-anchor="middle" x="179.9" y="-8.1" font-family="Helvetica,sans-Serif" font-size="11">Reduction Scenario</text>
+</g>
+<!-- GCR&#45;&gt;ASRS -->
+<g id="edge1" class="edge" data-name="NuclearWar-&gt;NW" data-comment="GCR-&gt;ASRS">
+
+<path fill="none" stroke="black" d="M54.9,-162.85C54.9,-152.17 54.9,-138.17 54.9,-125.84"/>
+<polygon fill="black" stroke="black" points="58.4,-126.23 54.9,-116.23 51.4,-126.23 58.4,-126.23"/>
+</g>
+<!-- GCIL -->
+
+<!-- NW&#45;&gt;ASRS -->
+<g id="edge5" class="edge" data-name="NW-&gt;ASRS">
+
+<path fill="none" stroke="black" d="M80.19,-79.88C97.89,-69.07 121.85,-54.45 141.84,-42.24"/>
+<polygon fill="black" stroke="black" points="143.59,-45.27 150.3,-37.08 139.94,-39.3 143.59,-45.27"/>
+</g>
+<!-- IW&#45;&gt;ASRS -->
+<g id="edge6" class="edge" data-name="IW-&gt;ASRS">
+
+<path fill="none" stroke="black" d="M179.9,-78.01C179.9,-69.03 179.9,-57.83 179.9,-47.61"/>
+<polygon fill="black" stroke="black" points="183.4,-47.76 179.9,-37.76 176.4,-47.76 183.4,-47.76"/>
+</g>
+<!-- VW&#45;&gt;ASRS -->
+<g id="edge7" class="edge" data-name="VW-&gt;ASRS">
+
+<path fill="none" stroke="black" d="M286.3,-80.06C267.33,-69.17 241.47,-54.33 219.99,-42.01"/>
+<polygon fill="black" stroke="black" points="221.89,-39.06 211.48,-37.12 218.41,-45.14 221.89,-39.06"/>
+</g>
+<!-- HEMP&#45;&gt;Grid -->
+<g id="edge8" class="edge" data-name="HEMP-&gt;Grid">
+
+<path fill="none" stroke="black" d="M541.77,-161.22C576.35,-148.95 621.73,-132.86 658.29,-119.89"/>
+<polygon fill="black" stroke="black" points="659.15,-123.3 667.41,-116.65 656.81,-116.7 659.15,-123.3"/>
+</g>
+<!-- GCIL -->
+<g id="node13" class="node" pointer-events="visible" data-name="GCIL">
+
+<polygon fill="none" stroke="black" points="778,-36 665.79,-36 665.79,0 778,0 778,-36"/>
+<text text-anchor="middle" x="721.9" y="-21.3" font-family="Helvetica,sans-Serif" font-size="11">Global Catastrophic</text>
+<text text-anchor="middle" x="721.9" y="-8.1" font-family="Helvetica,sans-Serif" font-size="11">Infrastructure Loss</text>
+</g>
+<!-- GCR&#45;&gt;GCIL -->
+<g id="edge2" class="edge" data-name="NuclearWar-&gt;HEMP" data-comment="GCR-&gt;GCIL">
+
+<path fill="none" stroke="black" d="M74.5,-197.8C86.91,-207.32 103.79,-218.28 120.9,-223.3 176.56,-239.61 324.92,-234.16 381.9,-223.3 399.69,-219.91 418.29,-213.61 434.91,-206.89"/>
+<polygon fill="black" stroke="black" points="436.25,-210.13 444.11,-203.03 433.54,-203.67 436.25,-210.13"/>
+</g>
+<!-- GCBR -->
+<g id="node14" class="node" pointer-events="visible" data-name="GCBR">
+
+<polygon fill="none" stroke="black" points="983,-36 870.79,-36 870.79,0 983,0 983,-36"/>
+<text text-anchor="middle" x="926.9" y="-21.3" font-family="Helvetica,sans-Serif" font-size="11">Global Catastrophic</text>
+<text text-anchor="middle" x="926.9" y="-8.1" font-family="Helvetica,sans-Serif" font-size="11">Biological Risk</text>
+</g>
+<!-- GCR&#45;&gt;GCBR -->
+<g id="node8" class="node" pointer-events="visible" data-name="IW" data-comment="GCR-&gt;GCBR">
+
+<ellipse fill="none" stroke="black" cx="179.9" cy="-96.32" rx="51.74" ry="18"/>
+<text text-anchor="middle" x="179.9" y="-93.02" font-family="Helvetica,sans-Serif" font-size="11.00">Impact Winter</text>
+</g>
+<!-- NW -->
+<g id="node7" class="node" pointer-events="visible" data-name="NW">
+
+<ellipse fill="none" stroke="black" cx="54.9" cy="-96.32" rx="54.8" ry="18"/>
+<text text-anchor="middle" x="54.9" y="-93.02" font-family="Helvetica,sans-Serif" font-size="11">Nuclear Winter</text>
+</g><g id="edge3" class="edge" data-name="NEO-&gt;IW" data-comment="NW">
+
+<path fill="none" stroke="black" d="M179.9,-156.51C179.9,-147.08 179.9,-136.11 179.9,-126.19"/>
+<polygon fill="black" stroke="black" points="183.4,-126.31 179.9,-116.31 176.4,-126.31 183.4,-126.31"/>
+</g>
+<!-- ASRS&#45;&gt;NW -->
+<g id="node3" class="node" pointer-events="visible" data-name="Volcano" data-comment="ASRS-&gt;NW">
+
+<ellipse fill="none" stroke="black" cx="319.9" cy="-180.97" rx="62.15" ry="24.15"/>
+<text text-anchor="middle" x="319.9" y="-184.27" font-family="Helvetica,sans-Serif" font-size="11.00">Major Volcanic</text>
+<text text-anchor="middle" x="319.9" y="-171.07" font-family="Helvetica,sans-Serif" font-size="11.00">Eruption</text>
+</g>
+<!-- NEO -->
+<g id="node2" class="node" pointer-events="visible" data-name="NEO">
+
+<ellipse fill="none" stroke="black" cx="179.9" cy="-180.97" rx="59.09" ry="24.15"/>
+<text text-anchor="middle" x="179.9" y="-184.27" font-family="Helvetica,sans-Serif" font-size="11">Near Earth</text>
+<text text-anchor="middle" x="179.9" y="-171.07" font-family="Helvetica,sans-Serif" font-size="11.00">Object Impact</text>
+</g><g id="node9" class="node" pointer-events="visible" data-name="VW" data-comment="NEO">
+
+<ellipse fill="none" stroke="black" cx="312.9" cy="-96.32" rx="57.34" ry="18"/>
+<text text-anchor="middle" x="312.9" y="-93.02" font-family="Helvetica,sans-Serif" font-size="11.00">Volcanic Winter</text>
+</g>
+<!-- ASRS&#45;&gt;NEO -->
+<g id="edge4" class="edge" data-name="Volcano-&gt;VW" data-comment="ASRS-&gt;NEO">
+
+<path fill="none" stroke="black" d="M317.91,-156.51C317.11,-147.08 316.18,-136.11 315.34,-126.19"/>
+<polygon fill="black" stroke="black" points="318.84,-125.98 314.51,-116.31 311.86,-126.57 318.84,-125.98"/>
+</g>
+<!-- Volcanoes -->
+
+<!-- ASRS&#45;&gt;Volcanoes -->
+<g id="node11" class="node" pointer-events="visible" data-name="Grid" data-comment="ASRS-&gt;Volcanoes">
+
+<ellipse fill="none" stroke="black" cx="721.9" cy="-96.32" rx="90.01" ry="24.15"/>
+<text text-anchor="middle" x="721.9" y="-99.62" font-family="Helvetica,sans-Serif" font-size="11.00">Large Scale Disruption</text>
+<text text-anchor="middle" x="721.9" y="-86.42" font-family="Helvetica,sans-Serif" font-size="11.00">of the Electrical Grid</text>
+</g>
+<!-- Cyber -->
+<g id="node4" class="node" pointer-events="visible" data-name="Cyber">
+
+<ellipse fill="none" stroke="black" cx="654.9" cy="-180.97" rx="59.95" ry="24.15"/>
+<text text-anchor="middle" x="654.9" y="-184.27" font-family="Helvetica,sans-Serif" font-size="11">Large Scale</text>
+<text text-anchor="middle" x="654.9" y="-171.07" font-family="Helvetica,sans-Serif" font-size="11.00">Cyber Attacks</text>
+</g><g id="edge9" class="edge" data-name="Cyber-&gt;Grid" data-comment="Cyber">
+
+<path fill="none" stroke="black" d="M672.85,-157.83C679.96,-149.06 688.27,-138.81 696.01,-129.26"/>
+<polygon fill="black" stroke="black" points="698.66,-131.55 702.24,-121.58 693.22,-127.14 698.66,-131.55"/>
+</g>
+<!-- GCIL&#45;&gt;Cyber -->
+
+<!-- Geomag -->
+<g id="node5" class="node" pointer-events="visible" data-name="Geomag">
+
+<ellipse fill="none" stroke="black" cx="789.9" cy="-180.97" rx="57.65" ry="24.15"/>
+<text text-anchor="middle" x="789.9" y="-184.27" font-family="Helvetica,sans-Serif" font-size="11">Geomagnetic</text>
+<text text-anchor="middle" x="789.9" y="-171.07" font-family="Helvetica,sans-Serif" font-size="11.00">Storms</text>
+</g><g id="edge10" class="edge" data-name="Geomag-&gt;Grid" data-comment="Geomag">
+
+<path fill="none" stroke="black" d="M771.68,-157.83C764.46,-149.06 756.03,-138.81 748.18,-129.26"/>
+<polygon fill="black" stroke="black" points="750.9,-127.07 741.85,-121.57 745.5,-131.51 750.9,-127.07"/>
+</g>
+<!-- GCIL&#45;&gt;Geomag -->
+<g id="node6" class="node" pointer-events="visible" data-name="Pandemic" data-comment="GCIL-&gt;Geomag">
+
+<ellipse fill="none" stroke="black" cx="926.9" cy="-180.97" rx="61.94" ry="18"/>
+<text text-anchor="middle" x="926.9" y="-177.67" font-family="Helvetica,sans-Serif" font-size="11.00">Global Pandemic</text>
+</g>
+<!-- HEMP -->
+<g id="node10" class="node" pointer-events="visible" data-name="HEMP">
+
+<ellipse fill="none" stroke="black" cx="488.9" cy="-180.97" rx="88.9" ry="24.15"/>
+<text text-anchor="middle" x="488.9" y="-184.27" font-family="Helvetica,sans-Serif" font-size="11">High Altitude</text>
+<text text-anchor="middle" x="488.9" y="-171.07" font-family="Helvetica,sans-Serif" font-size="11">Electromagnetic Pulse</text>
+</g><g id="edge12" class="edge" data-name="Pandemic-&gt;Grid" data-comment="HEMP">
+
+<path fill="none" stroke="black" d="M891.66,-165.77C861.23,-153.5 816.66,-135.53 780.81,-121.08"/>
+<polygon fill="black" stroke="black" points="782.46,-117.97 771.88,-117.48 779.85,-124.46 782.46,-117.97"/>
+</g>
+<!-- GCIL&#45;&gt;HEMP -->
+<g id="edge13" class="edge" data-name="Pandemic-&gt;GCBR" data-comment="GCIL-&gt;HEMP">
+
+<path fill="none" stroke="black" d="M926.9,-162.75C926.9,-135.15 926.9,-80.76 926.9,-47.37"/>
+<polygon fill="black" stroke="black" points="930.4,-47.62 926.9,-37.62 923.4,-47.62 930.4,-47.62"/>
+</g>
+
+<!-- Grid&#45;&gt;GCIL -->
+<g id="edge11" class="edge" data-name="Grid-&gt;GCIL">
+
+<path fill="none" stroke="black" d="M721.9,-72.01C721.9,-64.23 721.9,-55.48 721.9,-47.37"/>
+<polygon fill="black" stroke="black" points="725.4,-47.63 721.9,-37.63 718.4,-47.63 725.4,-47.63"/>
+</g>
+<!-- P -->
+
+</g>
+</svg>
