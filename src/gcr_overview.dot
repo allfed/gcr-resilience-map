@@ -1,0 +1,50 @@
+digraph GCR {
+    rankdir=TB;
+    node [shape=ellipse, fontname="Helvetica", fontsize=11];
+    
+    // Root causes (bottom level)
+    NuclearWar [label="Nuclear War"];
+    NEO [label="Near Earth\nObject Impact"];
+    Volcano [label="Major Volcanic\nEruption"];
+    Cyber [label="Large Scale\nCyber Attacks"];
+    Geomag [label="Geomagnetic\nStorms"];
+    Pandemic [label="Global Pandemic"];
+    
+    // Intermediate effects
+    NW [label="Nuclear Winter"];
+    IW [label="Impact Winter"];
+    VW [label="Volcanic Winter"];
+    HEMP [label="High Altitude\nElectromagnetic Pulse"];
+    Grid [label="Large Scale Disruption\nof the Electrical Grid"];
+    
+    // Top level outcomes (boxes)
+    ASRS [label="Abrupt Sunlight\nReduction Scenario", shape=box];
+    GCIL [label="Global Catastrophic\nInfrastructure Loss", shape=box];
+    GCBR [label="Global Catastrophic\nBiological Risk", shape=box];
+    
+    // Edges from root causes
+    NuclearWar -> NW;
+    NuclearWar -> HEMP;
+    NEO -> IW;
+    Volcano -> VW;
+    
+    // Winters to ASRS
+    NW -> ASRS;
+    IW -> ASRS;
+    VW -> ASRS;
+    
+    // Grid disruption pathway
+    HEMP -> Grid;
+    Cyber -> Grid;
+    Geomag -> Grid;
+    Grid -> GCIL;
+    Pandemic -> Grid;
+    
+    // Pandemic pathway
+    Pandemic -> GCBR;
+    
+    // Rank alignment
+    {rank=same; ASRS; GCIL; GCBR}
+    {rank=same; NW; IW; VW; Grid}
+    {rank=same; NuclearWar; NEO; Volcano; HEMP; Cyber; Geomag; Pandemic}
+}
