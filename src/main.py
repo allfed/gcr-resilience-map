@@ -11,7 +11,6 @@ from generate_overview import generate_overview
 from utils import setup_logging, save_to_ris, analyze_symmetric_difference
 
 
-
 def analyze_results(all_results):
     """
     Analyze query results to count article occurrences across different searches.
