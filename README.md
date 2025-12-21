@@ -156,7 +156,7 @@ query_sets:
   - name: combined_gcr_query
     query_name: "Combined GCR and Resilience Query"
     url: "https://api.openalex.org/works?..."
-    
+
 output:
   directory: 'output'
   ris_file: 'all_results.ris'

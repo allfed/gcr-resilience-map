@@ -21,7 +21,10 @@ from typing import List, Optional, Dict, Any
 # Third-party imports
 import anthropic
 import pandas as pd
-import PyPDF2
+try:
+    import pypdf as PyPDF2  # pypdf is the successor to PyPDF2
+except ImportError:
+    import PyPDF2  # Fallback for older installations
 from tqdm import tqdm
 import tiktoken
 
@@ -474,9 +477,9 @@ The entire row should look like: "field1","field2","field3",...,"field15"
 For fields with multiple options, use the exact values specified in brackets. Please analyze the paper thoroughly before extracting the information.
 Respond with ONLY the CSV row (no column headers, no additional text).
 
-For text fields, place the content in double quotes to properly handle any commas. 
+For text fields, place the content in double quotes to properly handle any commas.
 For fields with multiple options, use the exact values specified in brackets. P
-lease analyze the paper thoroughly before extracting the information. 
+lease analyze the paper thoroughly before extracting the information.
 Respond with ONLY the CSV row (no column headers)."""
 
     # Initialize components

@@ -1,6 +1,18 @@
+# Core dependencies
 pandas>=1.4.3
-setuptools>=61.2.0
-pytest>=7.1.2
 numpy>=1.23.1
 matplotlib>=3.5.1
+geopandas
+PyYAML
+requests
+
+# LLM processing (optional - only needed for paper_processor.py)
+anthropic
+pypdf>=3.0.0
+tqdm
+tiktoken
+
+# Development (optional)
+pytest>=7.1.2
+setuptools>=61.2.0
 mkdocs
