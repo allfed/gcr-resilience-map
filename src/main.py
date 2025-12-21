@@ -4,7 +4,7 @@ import os
 import argparse
 from collections import defaultdict
 import yaml
-from query_processor import QueryProcessor
+from OpenAlex.query_processor import QueryProcessor
 from utils import setup_logging, save_to_ris, analyze_symmetric_difference
 from generate_overview import generate_overview
 
