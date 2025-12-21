@@ -24,7 +24,10 @@ def get_file_stats(directory):
                         stats[file] = {
                             "total_articles": len(df),
                             "unique_authors": df["authors"].nunique(),
-                            "year_range": f"{df['publication_year'].min()}-{df['publication_year'].max()}",
+                            "year_range": (
+                                f"{df['publication_year'].min()}-"
+                                f"{df['publication_year'].max()}"
+                            ),
                         }
                 except (pd.errors.EmptyDataError, KeyError):
                     # Skip files that can't be read or don't have required columns
