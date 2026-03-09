@@ -131,3 +131,6 @@ config/api_key.txt
 
 # Ignore pdfs
 *.pdf
+
+# API cache and query outputs
+output/
