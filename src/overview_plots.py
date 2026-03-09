@@ -128,7 +128,15 @@ class WorldMap:
 if __name__ == "__main__":
     # Define country sets
     asrs = {"Australia", "New Zealand", "Argentina", "Brazil", "Uruguay", "Chile"}
-    gcil = {"Australia", "New Zealand", "Switzerland", "Uruguay", "China", "Brazil", "Cuba"}
+    gcil = {
+        "Australia",
+        "New Zealand",
+        "Switzerland",
+        "Uruguay",
+        "China",
+        "Brazil",
+        "Cuba",
+    }
     gcbr = {
         "Australia",
         "New Zealand",
