@@ -1,12 +1,13 @@
 """
-Plot Holocene volcanic eruptions on a world map, colored by VEI.
+Plot volcanic eruptions on a world map, colored by VEI.
 
-Reads volcano data from data/volcano_list.csv and creates a map showing
-eruption locations as dots. VEI 0-5 shown in yellow, VEI 6 in orange (2x size),
-VEI 7 in red (4x size), with volcano names labeled.
+Reads Holocene eruption data from data/volcano_list.csv (VEI 0-7) and
+large-eruption data from data/mag 7 and above eruptions.xlsx (VEI 8, covering
+~2.5 million years). VEI 0-5 shown in yellow, VEI 6 in orange, VEI 7 in red,
+VEI 8 in dark purple, with names labeled for VEI >= 7.
 
 Usage:
-    python src/plot_volcano_map.py
+    python src/volcano_map.py
 """
 
 import pandas as pd
@@ -90,6 +91,23 @@ def load_border():
     return border
 
 
+def load_vei8_data(filepath):
+    """
+    Load VEI 8 eruptions from the large-eruptions Excel file.
+
+    Covers ~2.5 million years. Returns only VEI 8 rows with valid coordinates.
+    """
+    df = pd.read_excel(filepath)
+    df = df.rename(columns={"Volcano Name": "Name"})
+    df = df[["Name", "Latitude", "Longitude", "VEI"]].copy()
+    df = df.dropna(subset=["Latitude", "Longitude", "VEI"])
+    df["Latitude"] = pd.to_numeric(df["Latitude"], errors="coerce")
+    df["Longitude"] = pd.to_numeric(df["Longitude"], errors="coerce")
+    df["VEI"] = pd.to_numeric(df["VEI"], errors="coerce").astype(int)
+    df = df[df["VEI"] == 8]
+    return df
+
+
 def create_volcano_geodataframe(df):
     """Convert volcano dataframe to GeoDataFrame with point geometries."""
     gdf = gpd.GeoDataFrame(
@@ -100,14 +118,16 @@ def create_volcano_geodataframe(df):
     return gdf
 
 
-def plot_volcano_map(volcano_gdf, output_path):
+def plot_volcano_map(volcano_gdf, vei8_gdf, output_path):
     """
     Create and save the volcano eruption map.
 
     Parameters
     ----------
     volcano_gdf : GeoDataFrame
-        Volcano eruption data with geometry and VEI columns.
+        Holocene eruption data (VEI 0-7) with geometry and VEI columns.
+    vei8_gdf : GeoDataFrame
+        VEI 8 eruption data (~2.5 Ma) with geometry and VEI columns.
     output_path : Path
         Where to save the output figure.
 
@@ -122,6 +142,7 @@ def plot_volcano_map(volcano_gdf, output_path):
     # Reproject to Winkel Tripel
     world = world.to_crs("+proj=wintri")
     volcano_gdf = volcano_gdf.to_crs("+proj=wintri")
+    vei8_gdf = vei8_gdf.to_crs("+proj=wintri")
 
     # Create figure
     fig, ax = plt.subplots(figsize=(14, 8))
@@ -130,36 +151,50 @@ def plot_volcano_map(volcano_gdf, output_path):
     # Plot countries (light gray background)
     world.plot(ax=ax, color="#F5F5F5", edgecolor="#888888", linewidth=0.3)
 
-    # Define VEI groups with colors and sizes
-    # Base size for VEI 0-5, then double for each level
+    # Define VEI groups with colors and sizes (plotted smallest to largest so
+    # bigger eruptions render on top). VEI 7 is plotted again at a higher
+    # zorder after VEI 8 so the labeled dots are always on top.
     base_size = 60
     vei_groups = [
         {
+            "gdf": volcano_gdf,
             "vei_range": (0, 5),
             "color": "#FFD700",
             "size": base_size,
-            "label": "VEI 0-5",
+            "label": "VEI 0–5 (Holocene)",
+            "zorder": 3,
         },
         {
+            "gdf": volcano_gdf,
             "vei_range": (6, 6),
             "color": "#FF8C00",
             "size": base_size * 3,
-            "label": "VEI 6",
+            "label": "VEI 6 (Holocene)",
+            "zorder": 3,
         },
         {
+            "gdf": vei8_gdf,
+            "vei_range": (8, 8),
+            "color": "#4B0082",
+            "size": base_size * 9,
+            "label": "VEI 8 (~2.5 Ma)",
+            "zorder": 4,
+        },
+        # VEI 7 plotted last so it sits on top of VEI 8 dots
+        {
+            "gdf": volcano_gdf,
             "vei_range": (7, 7),
             "color": "#DC143C",
             "size": base_size * 6,
-            "label": "VEI 7",
+            "label": "VEI 7 (Holocene)",
+            "zorder": 5,
         },
     ]
 
-    # Plot each VEI group separately
-    # Plot in reverse order so larger eruptions appear on top
     for group in vei_groups:
         vei_min, vei_max = group["vei_range"]
-        mask = (volcano_gdf["VEI"] >= vei_min) & (volcano_gdf["VEI"] <= vei_max)
-        subset = volcano_gdf[mask]
+        mask = (group["gdf"]["VEI"] >= vei_min) & (group["gdf"]["VEI"] <= vei_max)
+        subset = group["gdf"][mask]
 
         if len(subset) > 0:
             ax.scatter(
@@ -171,50 +206,23 @@ def plot_volcano_map(volcano_gdf, output_path):
                 edgecolor="black",
                 linewidth=0.3,
                 label=group["label"],
-                zorder=3,
+                zorder=group["zorder"],
             )
 
-    # Add labels for VEI 7 eruptions
-    vei7_mask = volcano_gdf["VEI"] == 7
-    vei7_eruptions = volcano_gdf[vei7_mask]
+    # Label Holocene VEI 7 eruptions only
+    vei7_eruptions = volcano_gdf[volcano_gdf["VEI"] == 7]
 
-    # Use adjustText if available, otherwise simple labels with offset
     try:
         from adjustText import adjust_text
 
         texts = []
-        for idx, row in vei7_eruptions.iterrows():
+        for _, row in vei7_eruptions.iterrows():
             text = ax.annotate(
                 row["Name"],
                 xy=(row.geometry.x, row.geometry.y),
                 xytext=(8, 8),
                 textcoords="offset points",
-                fontsize=8,
-                color="#333333",
-                bbox=dict(
-                    boxstyle="round,pad=0.3",
-                    facecolor="white",
-                    edgecolor="grey",
-                    alpha=0.9,
-                    linewidth=0.5,
-                ),
-                zorder=4,
-            )
-            texts.append(text)
-
-        # Adjust text positions to avoid overlaps
-        adjust_text(
-            texts, arrowprops=dict(arrowstyle="-", color="#888888", lw=0.5, alpha=0.7)
-        )
-    except ImportError:
-        # Fallback: simple labels with offset
-        for idx, row in vei7_eruptions.iterrows():
-            ax.annotate(
-                row["Name"],
-                xy=(row.geometry.x, row.geometry.y),
-                xytext=(8, 8),
-                textcoords="offset points",
-                fontsize=8,
+                fontsize=7,
                 color="#333333",
                 bbox=dict(
                     boxstyle="round,pad=0.3",
@@ -223,44 +231,72 @@ def plot_volcano_map(volcano_gdf, output_path):
                     alpha=0.9,
                     linewidth=0.5,
                 ),
-                zorder=4,
+                zorder=5,
+            )
+            texts.append(text)
+
+        adjust_text(
+            texts, arrowprops=dict(arrowstyle="-", color="#888888", lw=0.5, alpha=0.7)
+        )
+    except ImportError:
+        for _, row in vei7_eruptions.iterrows():
+            ax.annotate(
+                row["Name"],
+                xy=(row.geometry.x, row.geometry.y),
+                xytext=(8, 8),
+                textcoords="offset points",
+                fontsize=7,
+                color="#333333",
+                bbox=dict(
+                    boxstyle="round,pad=0.3",
+                    facecolor="white",
+                    edgecolor="#DC143C",
+                    alpha=0.9,
+                    linewidth=0.5,
+                ),
+                zorder=5,
             )
 
     # Add ALLFED border
-    border.plot(ax=ax, edgecolor="black", linewidth=0.5, facecolor="none", zorder=4)
+    border.plot(ax=ax, edgecolor="black", linewidth=0.5, facecolor="none", zorder=6)
 
     # Remove axes
     ax.set_axis_off()
 
-    # Add legend (lower left)
+    # Build legend with explicit proxy handles so marker sizes are bounded
+    from matplotlib.lines import Line2D
+
+    legend_elements = [
+        Line2D([0], [0], marker="o", color="w", markerfacecolor="#FFD700",
+               markeredgecolor="black", markeredgewidth=0.3, markersize=6,
+               label="VEI 0–5 (Holocene)"),
+        Line2D([0], [0], marker="o", color="w", markerfacecolor="#FF8C00",
+               markeredgecolor="black", markeredgewidth=0.3, markersize=9,
+               label="VEI 6 (Holocene)"),
+        Line2D([0], [0], marker="o", color="w", markerfacecolor="#DC143C",
+               markeredgecolor="black", markeredgewidth=0.3, markersize=12,
+               label="VEI 7 (Holocene)"),
+        Line2D([0], [0], marker="o", color="w", markerfacecolor="#4B0082",
+               markeredgecolor="black", markeredgewidth=0.3, markersize=15,
+               label="VEI 8 (~2.5 Ma)"),
+    ]
     legend = ax.legend(
+        handles=legend_elements,
         loc="lower left",
         frameon=True,
         facecolor="white",
         edgecolor="#888888",
         fontsize=9,
-        markerscale=1.5,
     )
-    legend.set_zorder(5)
+    legend.set_zorder(7)
 
-    # Add title
-    ax.set_title("Holocene Volcanic Eruptions by Explosivity", fontsize=14, pad=10)
-
-    # Add data summary annotation (lower right to avoid legend overlap)
-    n_eruptions = len(volcano_gdf)
-    n_volcanoes = volcano_gdf["Name"].nunique()
-    ax.annotate(
-        f"{n_eruptions:,} eruptions at {n_volcanoes:,} volcanoes",
-        xy=(0.98, 0.08),
-        xycoords="axes fraction",
-        fontsize=9,
-        color="#555555",
-        ha="right",
+    ax.set_title(
+        "Volcanic Eruptions by Explosivity (VEI 0–8)", fontsize=14, pad=10
     )
 
     # Add source annotation
     ax.annotate(
-        "Data: NOAA NGDC Significant Volcanic Eruptions Database",
+        "Data: NOAA NGDC (Holocene); LaMEVE database (VEI 8, ~2.5 Ma)",
         xy=(0.98, 0.02),
         xycoords="axes fraction",
         fontsize=8,
@@ -284,29 +320,35 @@ def main():
     repo_root = script_dir.parent
 
     data_path = repo_root / "data" / "volcano_list.csv"
+    vei8_path = repo_root / "data" / "mag 7 and above eruptions.xlsx"
     output_path = repo_root / "results" / "figures" / "holocene_volcanic_eruptions.png"
 
-    # Verify data file exists
     if not data_path.exists():
         raise FileNotFoundError(f"Data file not found: {data_path}")
+    if not vei8_path.exists():
+        raise FileNotFoundError(f"Data file not found: {vei8_path}")
 
-    # Load data
-    print("Loading volcano data...")
+    # Load Holocene data (VEI 0-7)
+    print("Loading Holocene volcano data...")
     df = load_volcano_data(data_path)
-    print(f"Loaded {len(df)} eruptions with valid coordinates and VEI")
+    print(f"Loaded {len(df)} Holocene eruptions with valid coordinates and VEI")
 
-    # Print VEI distribution
-    print("\nVEI distribution:")
-    vei_counts = df["VEI"].value_counts().sort_index()
-    for vei, count in vei_counts.items():
+    print("\nHolocene VEI distribution:")
+    for vei, count in df["VEI"].value_counts().sort_index().items():
         print(f"  VEI {vei}: {count} eruptions")
 
-    # Convert to GeoDataFrame
     volcano_gdf = create_volcano_geodataframe(df)
+
+    # Load VEI 8 data (~2.5 Ma)
+    print("\nLoading VEI 8 eruption data...")
+    vei8_df = load_vei8_data(vei8_path)
+    print(f"Loaded {len(vei8_df)} VEI 8 eruptions")
+
+    vei8_gdf = create_volcano_geodataframe(vei8_df)
 
     # Create map
     print("\nCreating map...")
-    fig, ax = plot_volcano_map(volcano_gdf, output_path)
+    fig, ax = plot_volcano_map(volcano_gdf, vei8_gdf, output_path)
 
     plt.show()
 
