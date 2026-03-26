@@ -5,7 +5,8 @@
       "WebSearch",
       "Bash(uv run:*)",
       "Bash(uv add:*)",
-      "WebFetch(domain:volcano.si.edu)"
+      "WebFetch(domain:volcano.si.edu)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }
