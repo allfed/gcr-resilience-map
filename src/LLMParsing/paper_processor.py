@@ -442,21 +442,25 @@ winter, large magnitude volcanic eruptions, extreme pandemics, and infrastructur
 collapse catastrophes, and how do these resilience factors vary across catastrophe
 types?"
 
-After analyzing the paper thoroughly, provide your output in a single row CSV format with the following structure:
+After analyzing the paper thoroughly, provide your output in a single row CSV format
+with the following structure:
 
 1. paper_citation: Full citation (author, year, title)
 2. publication_type: [Journal article/Preprint/Report/Book chapter]
-3. gcr_types: Types of catastrophic risks addressed [Nuclear/Volcanic/Asteroid/Infrastructure/Pandemic/Climate/Multiple]
+3. gcr_types: Types of catastrophic risks addressed
+   [Nuclear/Volcanic/Asteroid/Infrastructure/Pandemic/Climate/Multiple]
 4. geographic_focus: [Global/Regional/National/Local/Islands - specify]
 5. geographic_factors: List key geographic factors (location, climate, resources, etc.)
-6. institutional_factors: List key institutional factors (governance, policies, social systems, etc.)
-7. infrastructural_factors: List key infrastructure factors (energy, food, communications, etc.)
+6. institutional_factors: List key institutional factors
+   (governance, policies, social systems, etc.)
+7. infrastructural_factors: List key infrastructure factors
+   (energy, food, communications, etc.)
 8. other_resilience_factors: Any resilience factors not fitting above categories
 9. study_approach: [Model/Empirical/Review/Case study/Theoretical]
 10. resilience_phase: [Preparedness/Robustness/Recovery/Adaptation]
 11. main_resilience_factors: Brief summary of main resilience-enhancing factors
 12. resilience_tradeoffs: [Yes/No] with description of any identified trade-offs
-13. vulnerable_resilient_regions: List of particularly vulnerable or resilient regions identified
+13. vulnerable_resilient_regions: List of particularly vulnerable or resilient regions
 14. overall_relevance: [Low/Medium/High] relevance to our research question
 15. evidence_gaps: Brief description of critical missing validation elements
 
@@ -471,13 +475,9 @@ CRITICAL CSV FORMATTING REQUIREMENTS:
 Example format: "text field 1","text field 2","text field 3"
 The entire row should look like: "field1","field2","field3",...,"field15"
 
-For fields with multiple options, use the exact values specified in brackets. Please analyze the paper thoroughly before extracting the information.
-Respond with ONLY the CSV row (no column headers, no additional text).
-
-For text fields, place the content in double quotes to properly handle any commas. 
-For fields with multiple options, use the exact values specified in brackets. P
-lease analyze the paper thoroughly before extracting the information. 
-Respond with ONLY the CSV row (no column headers)."""
+For fields with multiple options, use the exact values specified in brackets.
+Please analyze the paper thoroughly before extracting the information.
+Respond with ONLY the CSV row (no column headers, no additional text)."""
 
     # Initialize components
     text_extractor = PDFExtractor()

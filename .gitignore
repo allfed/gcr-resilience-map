@@ -134,3 +134,6 @@ config/api_key.txt
 
 # API cache and query outputs
 output/
+
+# Claude Code
+.claude/
