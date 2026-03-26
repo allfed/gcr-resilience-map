@@ -215,7 +215,7 @@ if __name__ == "__main__":
         "Bulgaria",
         "Canada",
         "Croatia",
-        "Czech Republic",
+        "Czechia",
         "Denmark",
         "Estonia",
         "Finland",
@@ -244,11 +244,11 @@ if __name__ == "__main__":
         "USA",
     }
 
-    # CSTO members
-    csto = {"Armenia", "Belarus", "Kazakhstan", "Kyrgyzstan", "Russia", "Tajikistan"}
+    # CSTO members (Armenia has effectively withdrawn as of early 2026)
+    csto = {"Belarus", "Kazakhstan", "Kyrgyzstan", "Russia", "Tajikistan"}
 
     # Non-NATO US allies with nuclear umbrella
-    us_allies_asia = {"Japan", "South Korea", "Australia", "Philippines"}
+    us_allies_asia = {"Japan", "South Korea", "Australia"}
 
     # China-North Korea defense pact
     china_nk = {"China", "North Korea"}
@@ -283,7 +283,7 @@ if __name__ == "__main__":
     groups["us_allies"] = (
         list(us_allies_asia),
         "#8FADBD",
-        "US allies with mutual defense pact",
+        "US allies under nuclear umbrella",
     )
 
     # China-North Korea defense pact (muted purple-grey)
@@ -309,6 +309,31 @@ if __name__ == "__main__":
 
     wm = WorldMap()
     fig, ax = wm.plot(groups, title="Nuclear Weapon States and Alliances")
+
+    # Overlay hatching on Russia and North Korea to indicate their 2024
+    # bilateral mutual defense treaty, without overriding their base group colors.
+    russia_nk_geom = wm.world[wm.world["NAME"].isin(["Russia", "North Korea"])]
+    russia_nk_geom.plot(
+        ax=ax, facecolor="none", edgecolor="#2A2A2A", linewidth=0.4, hatch="///",
+        zorder=2,
+    )
+    # Add a legend entry for the hatch pattern
+    import matplotlib.patches as mpatches
+    hatch_handle = mpatches.Patch(
+        facecolor="none", edgecolor="#2A2A2A", hatch="///", linewidth=0.4,
+        label="Russia-North Korea defense pact, both with nuclear weapons",
+    )
+    legend = ax.get_legend()
+    handles = legend.legend_handles if hasattr(legend, "legend_handles") else legend.legendHandles
+    handles.append(hatch_handle)
+    ax.legend(
+        handles=handles,
+        labels=[t.get_text() for t in legend.get_texts()] + [hatch_handle.get_label()],
+        loc="lower left",
+        frameon=True,
+        framealpha=0.9,
+    )
+
     plt.savefig(
         "results/figures/nuclear_alliances_map.png", dpi=150, bbox_inches="tight"
     )
