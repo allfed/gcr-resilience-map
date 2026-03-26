@@ -29,6 +29,7 @@ plt.style.use(
 # Data loading
 # ---------------------------------------------------------------------------
 
+
 def load_gvp(filepath, max_years=11_700):
     """
     Load the GVP eruption search result (main source).
@@ -94,8 +95,10 @@ def merge_sources(gvp_df, lameve_df, coord_tol=1.0):
             if (lat_ok & lon_ok).any():
                 continue  # already present
         missing_rows.append(row)
-        print(f"  Adding from LaMEVE (not in GVP): {row['Name']} "
-              f"(~{int(row['Start Year'])} CE, VEI {row['VEI']})")
+        print(
+            f"  Adding from LaMEVE (not in GVP): {row['Name']} "
+            f"(~{int(row['Start Year'])} CE, VEI {row['VEI']})"
+        )
 
     if missing_rows:
         extra = pd.DataFrame(missing_rows)
@@ -108,7 +111,7 @@ def merge_sources(gvp_df, lameve_df, coord_tol=1.0):
 NAME_OVERRIDES = {
     "Fisher": "Fisher Caldera",
     "Blanco, Cerro": "Cerro Blanco",
-    "Rinjani": "Samalas",   # 1257 CE eruption originated from the Samalas vent
+    "Rinjani": "Samalas",  # 1257 CE eruption originated from the Samalas vent
 }
 
 
@@ -121,6 +124,7 @@ def apply_name_overrides(df):
 # ---------------------------------------------------------------------------
 # Map helpers
 # ---------------------------------------------------------------------------
+
 
 def load_world_data():
     """Load Natural Earth country boundaries."""
@@ -165,6 +169,7 @@ def to_geodataframe(df):
 # Plotting
 # ---------------------------------------------------------------------------
 
+
 def plot_volcano_map(gdf, output_path, max_years=10_000):
     """
     Create and save the volcano eruption map.
@@ -187,12 +192,27 @@ def plot_volcano_map(gdf, output_path, max_years=10_000):
 
     base_size = 60
     vei_groups = [
-        {"vei_range": (0, 5), "color": "#FFD700", "size": base_size,
-         "label": "VEI 0–5", "zorder": 3},
-        {"vei_range": (6, 6), "color": "#FF8C00", "size": base_size * 3,
-         "label": "VEI 6", "zorder": 4},
-        {"vei_range": (7, 7), "color": "#DC143C", "size": base_size * 6,
-         "label": "VEI 7", "zorder": 5},
+        {
+            "vei_range": (0, 5),
+            "color": "#FFD700",
+            "size": base_size,
+            "label": "VEI 0–5",
+            "zorder": 3,
+        },
+        {
+            "vei_range": (6, 6),
+            "color": "#FF8C00",
+            "size": base_size * 3,
+            "label": "VEI 6",
+            "zorder": 4,
+        },
+        {
+            "vei_range": (7, 7),
+            "color": "#DC143C",
+            "size": base_size * 6,
+            "label": "VEI 7",
+            "zorder": 5,
+        },
     ]
 
     for group in vei_groups:
@@ -200,10 +220,14 @@ def plot_volcano_map(gdf, output_path, max_years=10_000):
         subset = gdf[(gdf["VEI"] >= vei_min) & (gdf["VEI"] <= vei_max)]
         if len(subset) > 0:
             ax.scatter(
-                subset.geometry.x, subset.geometry.y,
-                c=group["color"], s=group["size"],
-                edgecolor="black", linewidth=0.3,
-                label=group["label"], zorder=group["zorder"],
+                subset.geometry.x,
+                subset.geometry.y,
+                c=group["color"],
+                s=group["size"],
+                edgecolor="black",
+                linewidth=0.3,
+                label=group["label"],
+                zorder=group["zorder"],
             )
 
     # --- Labels for VEI 7 ---
@@ -213,8 +237,8 @@ def plot_volcano_map(gdf, output_path, max_years=10_000):
     # left/right placement so it is clear which label belongs to which dot).
     # Format: name -> (ha, x_offset_pts, y_offset_pts)
     PINNED = {
-        "Samalas": ("right", -8, 6),   # Lombok — label to the left
-        "Tambora": ("left",   8, 6),   # Sumbawa — label to the right
+        "Samalas": ("right", -8, 6),  # Lombok — label to the left
+        "Tambora": ("left", 8, 6),  # Sumbawa — label to the right
     }
 
     bbox_style = dict(
@@ -245,9 +269,12 @@ def plot_volcano_map(gdf, output_path, max_years=10_000):
 
     # Re-plot the pinned dots on top so they sit above the annotation arrows
     ax.scatter(
-        pinned_rows.geometry.x, pinned_rows.geometry.y,
-        c="#DC143C", s=base_size * 6,
-        edgecolor="black", linewidth=0.3,
+        pinned_rows.geometry.x,
+        pinned_rows.geometry.y,
+        c="#DC143C",
+        s=base_size * 6,
+        edgecolor="black",
+        linewidth=0.3,
         zorder=10,
     )
 
@@ -256,7 +283,8 @@ def plot_volcano_map(gdf, output_path, max_years=10_000):
     texts = []
     for _, row in auto.iterrows():
         t = ax.text(
-            row.geometry.x, row.geometry.y,
+            row.geometry.x,
+            row.geometry.y,
             row["Name"],
             fontsize=7,
             color="#333333",
@@ -281,31 +309,64 @@ def plot_volcano_map(gdf, output_path, max_years=10_000):
 
     # Legend
     from matplotlib.lines import Line2D
+
     legend_elements = [
-        Line2D([0], [0], marker="o", color="w", markerfacecolor="#FFD700",
-               markeredgecolor="black", markeredgewidth=0.3, markersize=6,
-               label="VEI 0–5"),
-        Line2D([0], [0], marker="o", color="w", markerfacecolor="#FF8C00",
-               markeredgecolor="black", markeredgewidth=0.3, markersize=9,
-               label="VEI 6"),
-        Line2D([0], [0], marker="o", color="w", markerfacecolor="#DC143C",
-               markeredgecolor="black", markeredgewidth=0.3, markersize=12,
-               label="VEI 7"),
+        Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="w",
+            markerfacecolor="#FFD700",
+            markeredgecolor="black",
+            markeredgewidth=0.3,
+            markersize=6,
+            label="VEI 0–5",
+        ),
+        Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="w",
+            markerfacecolor="#FF8C00",
+            markeredgecolor="black",
+            markeredgewidth=0.3,
+            markersize=9,
+            label="VEI 6",
+        ),
+        Line2D(
+            [0],
+            [0],
+            marker="o",
+            color="w",
+            markerfacecolor="#DC143C",
+            markeredgecolor="black",
+            markeredgewidth=0.3,
+            markersize=12,
+            label="VEI 7",
+        ),
     ]
     legend = ax.legend(
-        handles=legend_elements, loc="lower left", frameon=True,
-        facecolor="white", edgecolor="#888888", fontsize=9,
+        handles=legend_elements,
+        loc="lower left",
+        frameon=True,
+        facecolor="white",
+        edgecolor="#888888",
+        fontsize=9,
     )
     legend.set_zorder(10)
 
     ax.set_title(
         f"Volcanic Eruptions by Explosivity — Last {max_years:,} Years",
-        fontsize=14, pad=10,
+        fontsize=14,
+        pad=10,
     )
     ax.annotate(
         "Data: GVP Volcanoes of the World v5.2.8; supplemented by LaMEVE (VEI 7+)",
-        xy=(0.98, 0.02), xycoords="axes fraction",
-        fontsize=8, color="#888888", ha="right",
+        xy=(0.98, 0.02),
+        xycoords="axes fraction",
+        fontsize=8,
+        color="#888888",
+        ha="right",
     )
 
     plt.tight_layout()
@@ -318,6 +379,7 @@ def plot_volcano_map(gdf, output_path, max_years=10_000):
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def main():
     # --- Configuration ---
@@ -335,8 +397,10 @@ def main():
 
     print(f"Loading GVP data (last {MAX_YEARS:,} years)...")
     gvp_df = load_gvp(gvp_path, max_years=MAX_YEARS)
-    print(f"  {len(gvp_df)} eruptions — VEI distribution: "
-          f"{gvp_df['VEI'].value_counts().sort_index().to_dict()}")
+    print(
+        f"  {len(gvp_df)} eruptions — VEI distribution: "
+        f"{gvp_df['VEI'].value_counts().sort_index().to_dict()}"
+    )
 
     print(f"\nLoading LaMEVE VEI 7+ for cross-check (last {MAX_YEARS:,} years)...")
     lameve_df = load_lameve(lameve_path, max_years=MAX_YEARS)
@@ -346,7 +410,9 @@ def main():
     merged_df = merge_sources(gvp_df, lameve_df)
     merged_df = apply_name_overrides(merged_df)
     print(f"  Final dataset: {len(merged_df)} eruptions")
-    print(f"  VEI distribution: {merged_df['VEI'].value_counts().sort_index().to_dict()}")
+    print(
+        f"  VEI distribution: {merged_df['VEI'].value_counts().sort_index().to_dict()}"
+    )
 
     print("\nCreating map...")
     gdf = to_geodataframe(merged_df)

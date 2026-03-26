@@ -314,17 +314,29 @@ if __name__ == "__main__":
     # bilateral mutual defense treaty, without overriding their base group colors.
     russia_nk_geom = wm.world[wm.world["NAME"].isin(["Russia", "North Korea"])]
     russia_nk_geom.plot(
-        ax=ax, facecolor="none", edgecolor="#2A2A2A", linewidth=0.4, hatch="///",
+        ax=ax,
+        facecolor="none",
+        edgecolor="#2A2A2A",
+        linewidth=0.4,
+        hatch="///",
         zorder=2,
     )
     # Add a legend entry for the hatch pattern
     import matplotlib.patches as mpatches
+
     hatch_handle = mpatches.Patch(
-        facecolor="none", edgecolor="#2A2A2A", hatch="///", linewidth=0.4,
+        facecolor="none",
+        edgecolor="#2A2A2A",
+        hatch="///",
+        linewidth=0.4,
         label="Russia-North Korea defense pact, both with nuclear weapons",
     )
     legend = ax.get_legend()
-    handles = legend.legend_handles if hasattr(legend, "legend_handles") else legend.legendHandles
+    handles = (
+        legend.legend_handles
+        if hasattr(legend, "legend_handles")
+        else legend.legendHandles
+    )
     handles.append(hatch_handle)
     ax.legend(
         handles=handles,
