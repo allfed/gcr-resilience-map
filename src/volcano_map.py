@@ -35,8 +35,7 @@ def load_gvp(filepath, max_years=11_700):
     Load the GVP eruption search result (main source).
 
     Filters to confirmed eruptions within the last `max_years` years and with
-    valid coordinates and VEI. Eruptions with known VEI estimates that GVP
-    leaves blank are patched before NaN rows are dropped.
+    valid coordinates and VEI.
     """
     df = pd.read_excel(filepath, sheet_name="Eruption List", header=1)
     df = df.rename(columns={"Volcano Name": "Name"})
@@ -44,10 +43,6 @@ def load_gvp(filepath, max_years=11_700):
     df["Start Year"] = pd.to_numeric(df["Start Year"], errors="coerce")
     df["Latitude"] = pd.to_numeric(df["Latitude"], errors="coerce")
     df["Longitude"] = pd.to_numeric(df["Longitude"], errors="coerce")
-
-    # Patch known large eruptions that GVP lists without a VEI
-    # Kuwae ~1453 CE (GVP Start Year 1425): widely estimated VEI 6
-    df.loc[(df["Name"] == "Kuwae") & (df["Start Year"] == 1425), "VEI"] = 6
 
     df = df.dropna(subset=["Latitude", "Longitude", "VEI", "Start Year"])
     cutoff_year = 2025 - max_years
@@ -61,10 +56,18 @@ def load_lameve(filepath, max_years=11_700):
     Load VEI 7+ eruptions from the LaMEVE Excel file for cross-checking.
 
     LaMEVE uses BP relative to 1950, so Year = 1950 - Year BP.
+
+    Some eruptions (e.g. Kuwae, Macauley Island) have no VEI assigned but do
+    have a Magnitude value. Magnitude is a continuous analogue of VEI
+    (e.g. 7.2 ≈ VEI 7), so we derive VEI as floor(Magnitude) for those rows.
     """
     df = pd.read_excel(filepath)
     df = df.rename(columns={"Volcano Name": "Name"})
     df["VEI"] = pd.to_numeric(df["VEI"], errors="coerce")
+    df["Magnitude"] = pd.to_numeric(df["Magnitude"], errors="coerce")
+    # Fill missing VEI from Magnitude (floor to nearest integer)
+    mask = df["VEI"].isna() & df["Magnitude"].notna()
+    df.loc[mask, "VEI"] = df.loc[mask, "Magnitude"].apply(lambda m: int(m))
     df["Year BP"] = pd.to_numeric(df["Year BP"], errors="coerce")
     df["Latitude"] = pd.to_numeric(df["Latitude"], errors="coerce")
     df["Longitude"] = pd.to_numeric(df["Longitude"], errors="coerce")
