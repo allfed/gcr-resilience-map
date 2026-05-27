@@ -10,16 +10,16 @@ digraph PRISMA {
     B [label="Documents screened at title and abstract level\n(n = 3200)"];
     C [label="Documents excluded\n(duplicates or off-topic)\n(n = 2649)"];
     
-    D [label="Documents evaluated at full-text level (Phase 1)\n(n = 551)"];
+    D [label="Documents skimmed at full-text level (Phase 1)\n(n = 551)"];
     E [label="Documents excluded\n(did not meet eligibility criteria)\n(n = 404)"];
     
     F [label="Documents read in full (Phase 2)\n(n = 147)"];
     G [label="Documents excluded\n(did not meet eligibility criteria)\n(n = 72)"];
     
     H [label="Documents included from systematic scan\n(n = 75)"];
-    I [label="Additional Documents identified\nthrough expert-driven input\n(n = 77)"];
+    I [label="Additional documents identified\nthrough expert-driven input\n(n = 77)"];
     
-    J [label="Final corpus of included Documents\n(n = 152)", fillcolor="#e2efda", penwidth=2];
+    J [label="Final corpus of included documents\n(n = 152)", fillcolor="#e2efda", penwidth=2];
 
     // Edge Connections
     A -> B;
