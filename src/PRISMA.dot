@@ -1,0 +1,40 @@
+digraph PRISMA {
+    // Graph settings
+    graph [rankdir=TB, splines=ortho, nodesep=0.8, ranksep=0.6];
+    node [shape=box, fontname="Helvetica", fontsize=12, margin=0.2, style=filled, fillcolor=white];
+    edge [fontname="Helvetica", fontsize=10];
+
+    // Node Definitions
+    A [label="Documents identified through OpenAlex database scan\n(n = 3200)"];
+    
+    B [label="Documents screened at title and abstract level\n(n = 3200)"];
+    C [label="Documents excluded\n(duplicates or off-topic)\n(n = 2649)"];
+    
+    D [label="Documents skimmed at full-text level (Phase 1)\n(n = 551)"];
+    E [label="Documents excluded\n(did not meet eligibility criteria)\n(n = 404)"];
+    
+    F [label="Documents read in full (Phase 2)\n(n = 147)"];
+    G [label="Documents excluded\n(did not meet eligibility criteria)\n(n = 72)"];
+    
+    H [label="Documents included from database scan\n(n = 75)"];
+    I [label="Additional documents identified\nthrough expert-driven input\n(n = 77)"];
+    
+    J [label="Final corpus of included documents\n(n = 152)", fillcolor="#e2efda", penwidth=2];
+
+    // Edge Connections
+    A -> B;
+    B -> D;
+    B -> C;
+    D -> F;
+    D -> E;
+    F -> H;
+    F -> G;
+    H -> J;
+    I -> J;
+
+    // Rank Alignments to mimic traditional PRISMA layout (exclusions to the right)
+    {rank=same; B; C;}
+    {rank=same; D; E;}
+    {rank=same; F; G;}
+    {rank=same; H; I;}
+}
