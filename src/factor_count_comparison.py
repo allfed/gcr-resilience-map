@@ -75,12 +75,16 @@ SCOPES = {
     "GCBR": ["GCBR", "General"],
 }
 
-# Colours for the four stacked segments
+# Colours for the four stacked segments. A blue (resilience) vs. orange
+# (vulnerability) diverging scheme: colour-blind friendly (avoids the red/green
+# pitfall) and reuses the blue/amber hues from visual_abstract.py. Named vs.
+# inferred is a dark/light luminance step within each hue, which also reads
+# under colour-blindness.
 COLORS = {
-    ("resilient", "named"): "#2c7a3f",  # dark green
-    ("resilient", "inference"): "#8fc99c",  # light green
-    ("vulnerable", "named"): "#a02c2c",  # dark red
-    ("vulnerable", "inference"): "#e09b9b",  # light red
+    ("resilient", "named"): "#205089",  # dark blue
+    ("resilient", "inference"): "#92c0e8",  # light blue
+    ("vulnerable", "named"): "#a55f0c",  # dark orange
+    ("vulnerable", "inference"): "#f5c089",  # light orange
 }
 
 LEGEND_LABELS = {
