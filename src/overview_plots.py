@@ -125,30 +125,27 @@ class WorldMap:
         return fig, axes
 
 
+def top_countries_for_scope(scope):
+    """Top-N countries by resilience factors for a given GCR scope.
+
+    Reuses the factor-count analysis in ``factor_count_comparison`` so the maps
+    always highlight exactly the countries shown in the factor-count charts.
+    """
+    import factor_count_comparison as fcc
+
+    df = fcc.expand_regions(fcc.load_ledger())
+    categories = fcc.SCOPES[scope]
+    scoped = df if categories is None else df[df["GCR category"].isin(categories)]
+    table = fcc.counts_by_country(scoped)
+    return set(fcc.top_countries(table))
+
+
 if __name__ == "__main__":
-    # Define country sets
-    asrs = {"Australia", "New Zealand", "Argentina", "Brazil", "Uruguay", "Chile"}
-    gcil = {
-        "Australia",
-        "New Zealand",
-        "Switzerland",
-        "Uruguay",
-        "China",
-        "Brazil",
-        "Cuba",
-    }
-    gcbr = {
-        "Australia",
-        "New Zealand",
-        "Norway",
-        "Sweden",
-        "Denmark",
-        "Finland",
-        "Canada",
-        "Switzerland",
-        "Japan",
-        "KOR",
-    }
+    # Highlight the top 5 countries by resilience factors for each scope,
+    # derived from the factor-count analysis so the maps stay in sync with it.
+    asrs = top_countries_for_scope("ASRS")
+    gcil = top_countries_for_scope("GCIL")
+    gcbr = top_countries_for_scope("GCBR")
 
     # Figure 1: Three stacked maps
     wm = WorldMap()
