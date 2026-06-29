@@ -51,8 +51,8 @@ INFRA_DK = "#205089"
 BIO = "#9152a8"  # GCBR  — biological (purple)
 BIO_DK = "#5f2f74"
 
-SAFE_DK = "#1f5d22"      # Australia / New Zealand accent
-FOOT_BG = "#f0f0f0"      # takeaway strip background (muted neutral)
+SAFE_DK = "#1f5d22"  # Australia / New Zealand accent
+FOOT_BG = "#f0f0f0"  # takeaway strip background (muted neutral)
 
 # ---------------------------------------------------------------------------
 # Figure — square so the Venn circles stay circular (graphical abstract)
@@ -119,9 +119,14 @@ def lines(
 # Header
 # ---------------------------------------------------------------------------
 ax.text(
-    0.5, 0.975,
+    0.5,
+    0.975,
     "Literature review",
-    ha="center", va="center", fontsize=5.2, fontweight="normal", color=GREY,
+    ha="center",
+    va="center",
+    fontsize=5.2,
+    fontweight="normal",
+    color=GREY,
 )
 ax.text(
     0.5,
@@ -160,10 +165,12 @@ for (ccx, ccy), face, edge in [
     (LL, INFRA, INFRA_DK),
     (LR, BIO, BIO_DK),
 ]:
-    ax.add_patch(Circle((ccx, ccy), R, facecolor=face, alpha=0.20,
-                         edgecolor="none", zorder=1))
-    ax.add_patch(Circle((ccx, ccy), R, facecolor="none",
-                         edgecolor=edge, linewidth=1.0, zorder=4))
+    ax.add_patch(
+        Circle((ccx, ccy), R, facecolor=face, alpha=0.20, edgecolor="none", zorder=1)
+    )
+    ax.add_patch(
+        Circle((ccx, ccy), R, facecolor="none", edgecolor=edge, linewidth=1.0, zorder=4)
+    )
 
 # ---------------------------------------------------------------------------
 # Family names + example triggers — placed OUTSIDE each circle
@@ -323,14 +330,23 @@ lines(
 # ---------------------------------------------------------------------------
 chip(0.035, 0.010, 0.93, 0.092, FOOT_BG)
 ax.text(
-    0.5, 0.075, "Australia & New Zealand fare best across scenarios",
-    ha="center", va="center", fontsize=5.4, fontweight="bold", color=INK,
+    0.5,
+    0.075,
+    "Australia & New Zealand fare best across scenarios",
+    ha="center",
+    va="center",
+    fontsize=5.4,
+    fontweight="bold",
+    color=INK,
 )
 ax.text(
     0.5,
     0.038,
     "— yet stay vulnerable, especially without global cooperation & trade",
-    ha="center", va="center", fontsize=4.3, color=GREY,
+    ha="center",
+    va="center",
+    fontsize=4.3,
+    color=GREY,
 )
 
 # ---------------------------------------------------------------------------
