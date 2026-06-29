@@ -145,9 +145,7 @@ def counts_by_country(df):
 
 def top_countries(table):
     """Top N countries ranked by total resilience factors (named + inferred)."""
-    resilience_total = (
-        table[("resilient", "named")] + table[("resilient", "inference")]
-    )
+    resilience_total = table[("resilient", "named")] + table[("resilient", "inference")]
     resilience_total = resilience_total[resilience_total > 0]
     ranked = resilience_total.sort_values(ascending=False)
     return list(ranked.head(N_TOP).index)
@@ -197,7 +195,9 @@ def plot_scope(table, countries, scope_label, out_path):
     ax.set_xticks(list(x))
     ax.set_xticklabels(countries, rotation=30, ha="right")
     ax.set_ylabel("Number of vulnerability / resilience factors")
-    ax.set_title(f"Top {len(countries)} countries by resilience factors - {scope_label}")
+    ax.set_title(
+        f"Top {len(countries)} countries by resilience factors - {scope_label}"
+    )
     # Show absolute counts on both sides of the axis (vulnerability is drawn below
     # zero but labelled with positive numbers).
     ax.yaxis.set_major_formatter(
