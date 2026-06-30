@@ -35,7 +35,7 @@ The `overview_plots.py` maps and `factor_count_comparison.py` charts are both dr
 
 ## Data Sources
 
-- **OpenAlex** — academic literature on GCR resilience, queried via the [OpenAlex API](https://openalex.org/) (query in `config/config.yml`); hits manually screened by two reviewers.
+- **OpenAlex** — academic literature on GCR resilience, queried via the [OpenAlex API](https://openalex.org/) (query in `config/config.yml`).
 - **Anthropic Claude** — extracts structured resilience/vulnerability factors from screened papers (`src/LLMParsing/paper_processor.py`).
 - **GCR resilience evidence ledger** (`results/Data/gcr_resilience_evidence_ledger.xlsx`) — curated synthesis of the extraction (country, GCR category, factor, direction, provenance, source); drives the country maps and factor-count charts.
 - **Global Health Security Index 2021** — NTI / Johns Hopkins Center for Health Security.
